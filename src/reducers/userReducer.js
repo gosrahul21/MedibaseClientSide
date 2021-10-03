@@ -1,4 +1,6 @@
 import {
+    ADD_DOCTOR_ABOUT,
+    ADD_NORM_USER_ABOUT,
     ADD_USER,
     LOGOUT_USER
 } from '../actions/actionTypes'
@@ -13,6 +15,16 @@ export default (state=initialState,action)=>{
             return {
                 ...state,
                 ...action.payload
+            }
+        case ADD_DOCTOR_ABOUT:
+            return {
+                ...state,
+                doctor:action.payload
+            }
+        case ADD_NORM_USER_ABOUT:
+            return {
+                ...state,
+                patient:action.payload
             }
         case LOGOUT_USER:
             return {}
