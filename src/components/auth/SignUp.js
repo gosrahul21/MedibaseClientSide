@@ -31,6 +31,7 @@ export default function SignUp() {
         // })().then(()=>{ console.log("done")}).catch((err)=>{
         //     console.log(err)
         // })
+        console.log(role)
         axios.post('http://localhost:8000/auth/register',{
             email,
             password,
@@ -50,6 +51,7 @@ export default function SignUp() {
     }   
 
     const onHandleChange = (e,setState)=>{
+        console.log(e.target.value)
         setState(e.target.value)
     }
 

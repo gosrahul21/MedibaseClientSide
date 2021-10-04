@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { Input } from '@material-ui/core'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 export default function PatientAboutEdit({user}) {
 
@@ -10,6 +11,8 @@ export default function PatientAboutEdit({user}) {
     const [gender,setGender] = useState("")
     const token = localStorage.getItem('token_id')
     
+    const patient = useSelector(({patient})=> patient)
+
     useEffect(()=>{
         axios.get('http://localhost:8000/patient',{
             headers:{
@@ -26,10 +29,10 @@ export default function PatientAboutEdit({user}) {
         })
     },[])
 
-
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/patient',{
+        if(!patient)
+        return axios.post(`http://localhost:8000/patient/`,{
             name,
             DOB:dob,
             gender,
@@ -45,6 +48,27 @@ export default function PatientAboutEdit({user}) {
         }).catch(({data})=>{
             console.log(data)
         })
+
+        return axios.put(`http://localhost:8000/patient/${patient._id}`,{
+            name,
+            DOB:dob,
+            gender,
+            contactNo
+
+        },
+        {
+            headers:{
+                token
+            }
+        }).then(({data})=>{
+            console.log(data)
+        }).catch(({data})=>{
+            console.log(data)
+        })
+
+        
+
+        
     }
 
 

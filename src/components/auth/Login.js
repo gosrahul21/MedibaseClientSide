@@ -1,9 +1,9 @@
 import React,{useState} from 'react';
-import {useHistory} from 'react-router-dom'
+import {useHistory,Link} from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import './Login.css'
 import axios from 'axios'
-import { ADD_USER } from '../../actions/actionTypes';
+import { ADD_USER, GET_USER, GET__USER } from '../../actions/actionTypes';
 
 const Login = () => {
 
@@ -21,7 +21,7 @@ const Login = () => {
             //store the token in localstorage
            localStorage.setItem('token_id',token)
            dispatch({
-               type:ADD_USER,
+               type:GET_USER,
                payload:{
                    userId,
                    email,
@@ -54,6 +54,7 @@ const Login = () => {
             <button className="submit-btn" type="submit" value="Login">Login</button>
             <button type="submit" className="submit-btn google-login" value="Sign up through Google">Sign Up through Google</button> 
         <button type="submit" className="submit-btn facebook-login" value="Sign up through Facebook">Sign up using Facebook</button> 
+        <span>Don't have account? <Link to='/signup' > Sign Up</Link></span>
         </form>
     </div>)
 }

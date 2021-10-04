@@ -1,12 +1,11 @@
 import React,{useState} from 'react'
 import { Input } from '@material-ui/core'
-import {useDispatch} from 'react-redux'
+import {useDispatch,useSelector} from 'react-redux'
 import axios from 'axios'
-import {ADD_DOCTOR_ABOUT} from '../../actions/actionTypes'
+import {GET_DOCTOR_ABOUT} from '../../actions/actionTypes'
 
-function DoctorAboutEdit({user}) {
+function DoctorAboutEdit({user,type}) {
     
-
     const [name,setName] = useState("")
     const [dob,setDob] = useState("")
     const [contactNo,setContact] = useState("")
@@ -14,13 +13,14 @@ function DoctorAboutEdit({user}) {
     const [organizationName,setOrganizationName] = useState("")
     const [organizationType,setOrganizationType] = useState("")
     const token = localStorage.getItem('token_id')
-
+    const doctor = useSelector(state => state.doctor)
 
     const dispatch = useDispatch()
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/doctor',{
+        if(!doctor)
+        return axios.post('http://localhost:8000/doctor',{
             name,
             DOB:dob,
             gender,
@@ -36,13 +36,39 @@ function DoctorAboutEdit({user}) {
         }).then(({data})=>{
             console.log(data)
             dispatch({
-                type:ADD_DOCTOR_ABOUT,
+                type:GET_DOCTOR_ABOUT,
                 payload:data
             })
             //add remaining details in state
         }).catch(({data})=>{
             console.log(data)
         })
+
+
+        axios.put(`http://localhost:8000/doctor/${doctor._id}`,{
+            name,
+            DOB:dob,
+            gender,
+            contactNo,
+            organization:organizationName,
+            organization_type:organizationType
+
+        },
+        {
+            headers:{
+                token
+            }
+        }).then(({data})=>{
+            console.log(data)
+            dispatch({
+                type:GET_DOCTOR_ABOUT,
+                payload:data
+            })
+            //add remaining details in state
+        }).catch(({data})=>{
+            console.log(data)
+        })
+       
     }
 
 

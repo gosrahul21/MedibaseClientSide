@@ -4,7 +4,7 @@ import Avatar from '@material-ui/core/Avatar'
 import SettingsIcon from '@material-ui/icons/Settings'
 import {FileCopy} from '@material-ui/icons'
 import { useHistory,useParams } from 'react-router'
-import { Button,IconButton ,CircularProgress} from '@material-ui/core'
+import { Button,IconButton ,CircularProgress,Box} from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -90,7 +90,8 @@ const Profile = () => {
             
                 
              {/* medical history */}
-             </>):(loading?(<CircularProgress/>):<h1>This user don't have profile</h1>)}
+             </>):(loading?(
+            <CircularProgress color="inherit" />):<h1>This user don't have profile</h1>)}
         </div>
     );
 }

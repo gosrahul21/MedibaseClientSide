@@ -15,13 +15,14 @@ import Profile from './components/Profile/Profile';
 import About from './components/Profile/About';
 import PrivateRoute from './PrivateRoute'
 import {useDispatch,useSelector} from 'react-redux'
-import { ADD_USER } from './actions/actionTypes';
+import { GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER } from './actions/actionTypes';
 
 const App = () => {
     
     const history = useHistory();
     const dispatch = useDispatch();
-
+    const user = useSelector((state)=> state.user)
+    const token = localStorage.getItem('token_id');
     // useEffect(()=>{
     //         navigator.geolocation.getCurrentPosition((positon)=>{
                 
@@ -29,9 +30,6 @@ const App = () => {
     // },[]);
 
     useEffect(()=>{
-
-        
-        const token = localStorage.getItem('token_id');
         if(token){
             //request the user details
             axios.get('http://localhost:8000/auth',{
@@ -40,7 +38,7 @@ const App = () => {
             }}).then(({data})=>{
                 const {userId, email,role,roleId} = data;
                 dispatch({
-                    type:ADD_USER,
+                    type:GET_USER,
                     payload:{
                         userId,
                         email,
@@ -54,14 +52,54 @@ const App = () => {
         }
     },[])
    
+
+    useEffect(()=>{
+        if(user.email){
+            if(user.role==='patient'){
+                //login user is patient
+                axios.get('http://localhost:8000/patient',{
+                    headers:{
+                        token
+                    }
+                }).then(({data})=>{
+                    dispatch({
+                        type:GET_NORM_USER_ABOUT,
+                        payload:data
+                    })
+                }).catch(()=>{
+                    //give some error message in the screen to create profile
+                    //and redirect to create profile page
+                    // history.push('/about')
+                })
+            }else{
+                //login user is doctor
+                axios.get('http://localhost:8000/doctor',{
+                    headers:{
+                        token
+                    }
+                }).then(({data})=>{
+                    console.log(data)
+                    dispatch({
+                        type:GET_DOCTOR_ABOUT,
+                        payload:data
+                    })
+                }).catch(()=>{
+                    //give some error message in the screen to create profile
+                    //and redirect to create profile page
+                    // history.push('/about')
+                })
+            }
+        }
+
+    },[user])
     
     return (
         <>
             <Header/>
             <Switch>
                 <PrivateRoute exact path="/" component={Home}/>
-                <PrivateRoute exact path="/signup" component={SignUp}/>
-                <PrivateRoute exact path="/login" component={Login}/>
+                <Route exact path="/signup" component={SignUp}/>
+                <Route exact path="/login" component={Login}/>
                 <PrivateRoute exact path="/records" component={RecordDisplay}></PrivateRoute>
                 <PrivateRoute exact path="/addrepo" component={AddMedicalRepo}/>
                 <PrivateRoute exact path = '/settings' component={Setting}/>
@@ -69,6 +107,7 @@ const App = () => {
                 {/* <PrivateRoute exact path = '/myprofile'><Profile/></PrivateRoute> */}
                 <PrivateRoute exact path = '/search-profile/:email' component={Profile}></PrivateRoute>
                 <PrivateRoute exact path= "/about" component={About}/>
+                
             </Switch>
         </>
       
