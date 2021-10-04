@@ -5,46 +5,45 @@ import {useDispatch,useSelector} from 'react-redux'
 import SettingsIcon from '@material-ui/icons/Settings';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MessageIcon from '@material-ui/icons/Message';
-import Badge from '@material-ui/core/Badge';
+import {Badge,Avatar}  from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Notification from '../Notification';
 import SearchPatient from '../../SearchPatient'
 import Popup from '../../Popup'
 import { LOGOUT_USER } from '../../actions/actionTypes';
-
+import axios from 'axios';
 
 export default function Header() {
     const [scrolled,setScrolled] = useState(false);
     const [showNotification,setShowNotification] = useState(false);
+    const [notification,setNotification] = useState([]);
     const [logout,setLogout] = useState(false);
+    const [makeNotificationRequest,setMakeNotificationRequest] = useState(false)
 
     const [email,setEmail] = useState(''); //search by email id
     const dispatch = useDispatch()
     const history = useHistory();
-    
-    // useEffect(()=>{
-    //   document.body.addEventListener('click',()=>{
-    //     setShowNotification(false)
-    //   })
-    // })
-    // const handleScroll=() => {
-    //     const offset=window.scrollY;
-    //     if(offset > 140 ){
-    //       setScrolled(true);
-    //     }
-    //     else{
-    //       setScrolled(false);
-    //     }
-    //   }
-    
-    //   useEffect(() => {
-    //     window.addEventListener('scroll',handleScroll)
+    const {user} = useSelector((state)=> state)
 
-    //     return ()=>{
-    //         window.removeEventListener('scroll',handleScroll)
-    //     }
-    //   },[])
+    useEffect(()=>{
+        setTimeout(()=>{
+            axios.get('http://localhost:8000/notification',{headers:{
+                token:localStorage.getItem('token_id')
+            }}).then(({data})=>setNotification(data)).catch((err)=>console.log("error in fetching notificaion"))
+        },30000)
+    })
 
+    useEffect(()=>{
+        axios.get('http://localhost:8000/notification',{headers:{
+            token:localStorage.getItem('token_id')
+        }}).then(({data})=>setNotification(data)).catch((err)=>console.log("error in fetching notificaion"))
+    },[])
+    
+    // if(user.email)
+    // axios.get('http://localhost:8000/notification',{headers:{
+    //     token:localStorage.getItem('token_id')
+    // }}).then(({data})=>setNotification(data)).catch((err)=>console.log("error in fetching notificaion"))
+    
     
     const loginUserEmail = (useSelector((state)=> state.user.email))
     
@@ -61,6 +60,7 @@ export default function Header() {
           history.push('/login');
       }
 
+
     return (
         <div className={`navbar ${scrolled&&'scroll'}`}>
             <h1 className="cursor">MediBase</h1>
@@ -71,17 +71,23 @@ export default function Header() {
                     email={email}>
                     Search For Patient
                 </SearchPatient>
+                <div className="navRightPart">
+                <Avatar className="avatar" src={user.avatar}/>
+            </div>
+                
                 <Link className="navRightPart" to="/records">My Records</Link>
             
-            
+{/*             
             <div className="navRightPart">
                   <Badge  onClick={notificationClick} badgeContent={1} color="primary" >
                       <MessageIcon fontSize="medium" style={{color:"blue"}}/>
                   </Badge>
-            </div>
+            </div> */}
+            
+            
             
             <div className="navRightPart" >
-              <Badge  onClick={notificationClick} badgeContent={1} color="primary" >
+              <Badge  onClick={notificationClick} badgeContent={notification.length} color="primary" >
                     <NotificationsIcon fontSize="medium" style={{color:"blue"}}/>
                     </Badge>
                 {showNotification&& <Notification/>}

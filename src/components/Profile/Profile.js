@@ -16,19 +16,18 @@ const Profile = () => {
     const history = useHistory();
     const [loading,setLoading] = useState(false)
     const [targetUser,setTargetUser] = useState(null);
-    const user = useSelector(({user})=>user)
-
+    const {user,doctor} = useSelector((state)=>state)
+    const token = localStorage.getItem('token_id')
+    const [prescribe,setPrescribe] = useState('Request Presribe')
     useEffect(()=>{
        // search for the required user
-      const token = localStorage.getItem('token_id')
+
 
       if(!token ) return;
       setLoading(true)
-      axios.post('http://localhost:8000/user/email/',{email},{
-        headers:{
+      axios.post('http://localhost:8000/user/email/',{email},{ headers:{
         token
       }}).then(({data})=>{
-        
         setTargetUser(data);
         setLoading(false)
       }).catch((err)=>{
@@ -49,7 +48,13 @@ const Profile = () => {
 
 
     const request =(e,type)=>{
-        
+        axios.post('http://localhost:8000/request',{to:email,type},{headers:{
+            token
+        }}).then(({data})=>{
+            setPrescribe('Presribe Requested')
+        }).catch(()=>{
+            setPrescribe('Request Prescribe')
+        })
     }
     
     return (
@@ -64,20 +69,20 @@ const Profile = () => {
                     <div className="name__id">
                         <h3>{email}</h3>
                         {/* Copy to clipboard need to be added */}
-                        <FileCopy onClick = {null} />
+                        {/* <FileCopy onClick = {null} /> */}
                     </div>
                 
                 </div>
                 
                 {/* if normal user then show this--read access */}
                {(user.email!== email)&& <Button onClick={(e)=>request(e,"read")}>Request access</Button>}
-                {/* if doctor then show this -- write access */}
-                {(user.email!== email)&&<Button onClick={(e)=>request(e,'write')}>Request prescribe</Button>}
+                {/* if verified doctor then only show this -- write access */}
+                {(user.email!== email)&&(doctor)&&(doctor.verified)&&<Button onClick={(e)=>request(e,'write')}>{prescribe}</Button>}
                 
 
-                <IconButton component={SettingsIcon} onClick ={()=>history.push('/about')}>
+               {user.email===email&& <IconButton component={SettingsIcon} onClick ={()=>history.push('/about')}>
                     <SettingsIcon/>
-                </IconButton>
+                </IconButton>}
 
             </div>
      

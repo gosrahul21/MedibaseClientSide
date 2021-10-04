@@ -36,14 +36,15 @@ const App = () => {
                 headers:{
                 token
             }}).then(({data})=>{
-                const {userId, email,role,roleId} = data;
+                const {userId, email,role,roleId,avatar} = data;
                 dispatch({
                     type:GET_USER,
                     payload:{
                         userId,
                         email,
                         role,
-                        roleId
+                       
+                        avatar
                     }
                 })
             }).catch((err)=>{

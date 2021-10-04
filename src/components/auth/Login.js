@@ -17,7 +17,7 @@ const Login = () => {
         axios.post('http://localhost:8000/auth/login',{
             email,password
         }).then(({data})=>{
-            const {userId, email,role,roleId,token} = data;
+            const {userId, email,role,avatar,token} = data;
             //store the token in localstorage
            localStorage.setItem('token_id',token)
            dispatch({
@@ -26,7 +26,7 @@ const Login = () => {
                    userId,
                    email,
                    role,
-                   roleId
+                   avatar
                }
            })
            history.push('/')
