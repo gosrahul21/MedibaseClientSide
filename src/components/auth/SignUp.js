@@ -1,10 +1,9 @@
 import React,{useState} from 'react'
 import './SignUp.css'
 import {auth,googleAuthProvider} from '../../firebase'
-import { useHistory } from 'react-router';
-import axois from 'axios'
+import { useHistory,Link } from 'react-router-dom';
 import axios from 'axios';
-
+import {path} from '../../config'
 export default function SignUp() {
     const [ email,setEmail] = useState("")
     const [password,setPassword] = useState('')
@@ -22,7 +21,7 @@ export default function SignUp() {
 
         // (async () => {
         //     const config = {
-        //         url:process.env.REACT_APP_REGISTER_REDIRECT_URL_FROM_MAIL,
+        //         path:process.env.REACT_APP_REGISTER_REDIRECT_path_FROM_MAIL,
         //         handleCodeInApp: true,
         //       };
         //     await auth.sendSignInLinkToEmail(email,config)
@@ -31,8 +30,7 @@ export default function SignUp() {
         // })().then(()=>{ console.log("done")}).catch((err)=>{
         //     console.log(err)
         // })
-        console.log(role)
-        axios.post('http://localhost:8000/auth/register',{
+        axios.post(`${path}/auth/register`,{
             email,
             password,
             role
@@ -51,7 +49,6 @@ export default function SignUp() {
     }   
 
     const onHandleChange = (e,setState)=>{
-        console.log(e.target.value)
         setState(e.target.value)
     }
 
@@ -86,6 +83,7 @@ export default function SignUp() {
                     <option value="doctor">Doctor</option>
                 </select>
                 <button className='submit-btn' type="submit" value="Sign Up">Sign up</button>
+                <span>Already have account? <Link to='/login'>Sign In</Link></span>
             </form>
 
         </div>

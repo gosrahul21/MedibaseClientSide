@@ -3,7 +3,7 @@ import { Input } from '@material-ui/core'
 import {useDispatch,useSelector} from 'react-redux'
 import axios from 'axios'
 import {GET_DOCTOR_ABOUT} from '../../actions/actionTypes'
-
+import config,{path} from '../../config'
 function DoctorAboutEdit({user,type}) {
     
     const [name,setName] = useState("")
@@ -20,7 +20,7 @@ function DoctorAboutEdit({user,type}) {
     const onSubmitHandler = (e) => {
         e.preventDefault();
         if(!doctor)
-        return axios.post('http://localhost:8000/doctor',{
+        return axios.post(`${path}/doctor`,{
             name,
             DOB:dob,
             gender,
@@ -29,11 +29,7 @@ function DoctorAboutEdit({user,type}) {
             organization_type:organizationType
 
         },
-        {
-            headers:{
-                token
-            }
-        }).then(({data})=>{
+        {headers:{token}}).then(({data})=>{
             console.log(data)
             dispatch({
                 type:GET_DOCTOR_ABOUT,
@@ -45,7 +41,7 @@ function DoctorAboutEdit({user,type}) {
         })
 
 
-        axios.put(`http://localhost:8000/doctor/${doctor._id}`,{
+        axios.put(`${path}/doctor/${doctor._id}`,{
             name,
             DOB:dob,
             gender,
@@ -53,14 +49,9 @@ function DoctorAboutEdit({user,type}) {
             organization:organizationName,
             organization_type:organizationType
 
-        },
-        {
-            headers:{
-                token
-            }
-        }).then(({data})=>{
-            console.log(data)
-            dispatch({
+        },{headers:{token}})
+        .then(({data})=>{
+          dispatch({
                 type:GET_DOCTOR_ABOUT,
                 payload:data
             })

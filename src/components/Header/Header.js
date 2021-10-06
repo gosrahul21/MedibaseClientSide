@@ -12,6 +12,7 @@ import SearchPatient from '../../SearchPatient'
 import Popup from '../../Popup'
 import { LOGOUT_USER } from '../../actions/actionTypes';
 import axios from 'axios';
+import  { path } from '../../config'
 
 export default function Header() {
     const [scrolled,setScrolled] = useState(false);
@@ -24,23 +25,24 @@ export default function Header() {
     const dispatch = useDispatch()
     const history = useHistory();
     const {user} = useSelector((state)=> state)
+    const token = localStorage.getItem('token_id')
 
     useEffect(()=>{
         setTimeout(()=>{
-            axios.get('http://localhost:8000/notification',{headers:{
-                token:localStorage.getItem('token_id')
-            }}).then(({data})=>setNotification(data)).catch((err)=>console.log("error in fetching notificaion"))
+            axios.get(`${path}/notification`,{headers:{token}})
+            .then(({data})=>setNotification(data))
+            .catch((err)=>console.log("error in fetching notificaion"))
         },30000)
     })
 
     useEffect(()=>{
-        axios.get('http://localhost:8000/notification',{headers:{
-            token:localStorage.getItem('token_id')
-        }}).then(({data})=>setNotification(data)).catch((err)=>console.log("error in fetching notificaion"))
+        axios.get(`${path}/notification`,{headers:{token}})
+        .then(({data})=>setNotification(data))
+        .catch((err)=>console.log("error in fetching notificaion"))
     },[])
     
     // if(user.email)
-    // axios.get('http://localhost:8000/notification',{headers:{
+    // axios.get(`${path}/notification',{headers:{
     //     token:localStorage.getItem('token_id')
     // }}).then(({data})=>setNotification(data)).catch((err)=>console.log("error in fetching notificaion"))
     
@@ -66,14 +68,18 @@ export default function Header() {
             <h1 className="cursor">MediBase</h1>
             { loginUserEmail&&(<div className="nav-right">
                 <SearchPatient 
+                    
                     message="Search for Patient by Patient-Id" 
                     setEmail={setEmail} 
                     email={email}>
                     Search For Patient
                 </SearchPatient>
+
                 <div className="navRightPart">
-                <Avatar className="avatar" src={user.avatar}/>
-            </div>
+                    <Link to = {`/search-profile/${loginUserEmail}`}>
+                        <Avatar className="avatar" src={user.avatar}/>
+                    </Link>
+                </div>
                 
                 <Link className="navRightPart" to="/records">My Records</Link>
             
@@ -87,24 +93,24 @@ export default function Header() {
             
             
             <div className="navRightPart" >
-              <Badge  onClick={notificationClick} badgeContent={notification.length} color="primary" >
-                    <NotificationsIcon fontSize="medium" style={{color:"blue"}}/>
+                <Link to='/permission/pending'> 
+                    <Badge  onClick={notificationClick} badgeContent={notification.length} color="primary" >
+                        <NotificationsIcon fontSize="medium" style={{color:"blue"}}/>
                     </Badge>
-                {showNotification&& <Notification/>}
+                </Link>
+              
+                {/* {showNotification&& <Notification/>} */}
 
             </div>
             
 
-                
-  
-                
-           
+            
                <div className="navRightPart">
                <Link to='/settings' className="navRightPart rotate"><SettingsIcon/></Link>
              
                <div className="dropdown">
-                  <Link to='/usersallowed'>Permissions</Link>
-                  <Link to = {`/search-profile/${loginUserEmail}`}>Profile</Link>
+                  <Link to='/permission/granted'>Granted User</Link>
+                  {/* <Link to = {`pending-permission`}>Profile</Link> */}
                   <Popup 
                     className='drop-item'
                     summary="Confirm logout"

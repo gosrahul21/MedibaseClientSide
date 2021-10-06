@@ -8,7 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 
 
-const Confirm = ({Icon,children,message}) => {
+const Confirm = ({Icon,children,message,callback,type,id}) => {
     const [open, setOpen] = React.useState(false);
   
   const handleClickOpen = () => {
@@ -16,21 +16,26 @@ const Confirm = ({Icon,children,message}) => {
   };
   
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
   };
   
+  const handleConfirm = ()=>{
+    setOpen(false);
+    callback(id);
+  }
+
   return (
     <div>
       <Button variant="outlined" 
                 
-              color="primary" onClick={handleClickOpen}>
+              style={{backgroundColor:"blueviolet"}} onClick={handleClickOpen}>
                   {children}
                   
         </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
             {/* message to be put here */}
-           Confirm Deny Access
+           Confirm 
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -42,7 +47,7 @@ const Confirm = ({Icon,children,message}) => {
           <Button onClick={handleClose} color="primary">
            No
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleConfirm} color="primary" autoFocus>
            Yes
           </Button>
         </DialogActions>

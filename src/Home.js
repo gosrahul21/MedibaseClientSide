@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react'
 import axios from 'axios'
 import Card from './Card'
 import './Home.css'
+import config from './config'
 
 function Home() {
     const [doctors,setDoctors] = useState([])
@@ -9,7 +10,6 @@ function Home() {
     useEffect(()=>{
         axios.get('http://localhost:8000/doctor/all',{headers:{token}}).then(({data})=>{
             setDoctors(data)
-            console.log(data)
         }).catch((err)=>setDoctors([]))
     },[])
 

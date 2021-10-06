@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import './Login.css'
 import axios from 'axios'
 import { ADD_USER, GET_USER, GET__USER } from '../../actions/actionTypes';
-
+import { path } from '../../config';
 const Login = () => {
 
     const [email,setEmail] = useState("");
@@ -14,7 +14,7 @@ const Login = () => {
 
     const loginSubmit =  (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/auth/login',{
+        axios.post(`${path}/auth/login`,{
             email,password
         }).then(({data})=>{
             const {userId, email,role,avatar,token} = data;
@@ -52,8 +52,8 @@ const Login = () => {
                     />
             {/* <input type="checkbox"/><span>Unhide password</span> */}
             <button className="submit-btn" type="submit" value="Login">Login</button>
-            <button type="submit" className="submit-btn google-login" value="Sign up through Google">Sign Up through Google</button> 
-        <button type="submit" className="submit-btn facebook-login" value="Sign up through Facebook">Sign up using Facebook</button> 
+            {/* <button type="submit" className="submit-btn google-login" value="Sign up through Google">Sign Up through Google</button> 
+        <button type="submit" className="submit-btn facebook-login" value="Sign up through Facebook">Sign up using Facebook</button>  */}
         <span>Don't have account? <Link to='/signup' > Sign Up</Link></span>
         </form>
     </div>)

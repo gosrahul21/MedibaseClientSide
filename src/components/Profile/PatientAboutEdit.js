@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { Input } from '@material-ui/core'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-
+import config, {path} from '../../config'
 export default function PatientAboutEdit({user}) {
 
     const [name,setName] = useState("")
@@ -14,11 +14,8 @@ export default function PatientAboutEdit({user}) {
     const patient = useSelector(({patient})=> patient)
 
     useEffect(()=>{
-        axios.get('http://localhost:8000/patient',{
-            headers:{
-                token
-            }
-        }).then(({data:{name,DOB,contactNo,gender}})=>{
+        axios.get(`${path}/patient`,{headers:{token}}).
+        then(({data:{name,DOB,contactNo,gender}})=>{
             setName(name)
             setDob(DOB)
             setContact(contactNo)
@@ -32,35 +29,27 @@ export default function PatientAboutEdit({user}) {
     const onSubmitHandler = (e) => {
         e.preventDefault();
         if(!patient)
-        return axios.post(`http://localhost:8000/patient/`,{
+        return axios.post(`${path}/patient/`,{
             name,
             DOB:dob,
             gender,
             contactNo
-
-        },
-        {
-            headers:{
-                token
-            }
-        }).then(({data})=>{
+        },{headers:{token}})
+        .then(({data})=>{
             console.log(data)
         }).catch(({data})=>{
             console.log(data)
         })
 
-        return axios.put(`http://localhost:8000/patient/${patient._id}`,{
+        return axios.put(`${path}/patient/${patient._id}`,{
             name,
             DOB:dob,
             gender,
             contactNo
 
         },
-        {
-            headers:{
-                token
-            }
-        }).then(({data})=>{
+        {headers:{token}}).then(({data})=>{
+           //dispatch the updated profile
             console.log(data)
         }).catch(({data})=>{
             console.log(data)

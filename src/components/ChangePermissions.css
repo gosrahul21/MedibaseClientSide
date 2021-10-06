@@ -30,15 +30,16 @@
     padding:3px;
     display: flex;
     flex-direction: row;
-    cursor: pointer;
+    /* cursor: pointer; */
     align-items:center ;
+    /* justify-content: center; */
 }
 
 
-.userAllowed img{
-    width:50px;
-    height:50px;
-    border-radius: 50%;
+.userAllowed-right > .avatar,p{
+    
+    margin-right: 10px;
+    margin-left:5px;
 
 }
 
