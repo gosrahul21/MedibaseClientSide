@@ -17,7 +17,7 @@ const Profile = () => {
     const history = useHistory();
     const [loading,setLoading] = useState(false)
     const [targetUser,setTargetUser] = useState(null);
-    const {user,doctor} = useSelector((state)=>state)
+    const {user,doctor,realtime} = useSelector((state)=>state)
     const token = localStorage.getItem('token_id')
     const [prescribe,setPrescribe] = useState('Request Presribe')
     const [requestStatus,setRequestStatus] = useState(null);
@@ -32,13 +32,7 @@ const Profile = () => {
         console.log(path)
       axios.post(`${path}/user/email/`,{email},{headers:{token}}).then(({data})=>{
         
-        axios.get(`${path}/requestRecord/record-status/${data.id}`,config)
-        .then(({data})=>
-            {
-                setRequestStatus(data)
-                setLoading(false)
-            })
-            .catch(()=>setRequestStatus(null))
+
         
         
         setTargetUser(data);
@@ -58,7 +52,20 @@ const Profile = () => {
       
     },[email])
 
-
+    useEffect(()=>{
+        if(!targetUser) return
+        axios.get(`${path}/requestRecord/record-status/${targetUser.id}`,config)
+        .then(({data})=>
+            {
+                setRequestStatus(data)
+                setLoading(false)
+            })
+            .catch(()=>setRequestStatus(null))
+            return ()=>{
+               
+                setRequestStatus(null)
+            } 
+    },[targetUser,realtime])
 
     const request =(e,type)=>{
         

@@ -10,9 +10,10 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Notification from '../Notification';
 import SearchPatient from '../../SearchPatient'
 import Popup from '../../Popup'
-import { LOGOUT_USER } from '../../actions/actionTypes';
+import { CHANGE_MADE, LOGOUT_USER } from '../../actions/actionTypes';
 import axios from 'axios';
 import  { path } from '../../config'
+import io from 'socket.io-client'
 
 export default function Header() {
     const [scrolled,setScrolled] = useState(false);
@@ -27,18 +28,40 @@ export default function Header() {
     const {user} = useSelector((state)=> state)
     const token = localStorage.getItem('token_id')
 
-    useEffect(()=>{
-        setTimeout(()=>{
-            axios.get(`${path}/notification`,{headers:{token}})
-            .then(({data})=>setNotification(data))
-            .catch((err)=>console.log("error in fetching notificaion"))
-        },30000)
-    })
+    // useEffect(()=>{
+    //     setTimeout(()=>{
+    //         axios.get(`${path}/notification`,{headers:{token}})
+    //         .then(({data})=>setNotification(data))
+    //         .catch((err)=>console.log("error in fetching notificaion"))
+    //     },30000)
+    // })
 
     useEffect(()=>{
         axios.get(`${path}/notification`,{headers:{token}})
         .then(({data})=>setNotification(data))
         .catch((err)=>console.log("error in fetching notificaion"))
+
+
+        const socket = io('ws://localhost:8000',{ transports: ['websocket', 'polling', 'flashsocket'] })
+
+        socket.emit('join',{id:user.userId})
+        console.log(user.userId,"header section")
+        socket.on('requestInserted',(data)=>{
+            dispatch({
+                type:CHANGE_MADE
+            })
+            console.log("request inserted",data)
+            axios.get(`${path}/notification`,{headers:{token}})
+            .then(({data})=>setNotification(data))
+            .catch((err)=>console.log("error in fetching notificaion"))
+        })
+        
+
+        return ()=>{
+            socket.disconnect();
+            socket.off();
+        }
+
     },[])
     
     // if(user.email)

@@ -15,8 +15,10 @@ import Profile from './components/Profile/Profile';
 import About from './components/Profile/About';
 import PrivateRoute from './PrivateRoute'
 import {useDispatch,useSelector} from 'react-redux'
-import { GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER } from './actions/actionTypes';
+import { ADD_SOCKET, GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER, REMOVE_SOCKET } from './actions/actionTypes';
 import config,{path} from './config';
+
+import io from 'socket.io-client'
 
 const App = () => {
     
@@ -29,7 +31,7 @@ const App = () => {
                 
     //         })
     // },[]);
-
+// token login 
     useEffect(()=>{
         
         if(token){
@@ -87,10 +89,12 @@ const App = () => {
         }
 
     },[user])
+
+
     
     return (
         <>
-            <Header/>
+            {user.email&&<Header/>}
             <Switch>
                 <PrivateRoute exact path="/" component={Home}/>
                 <Route exact path="/signup" component={SignUp}/>

@@ -8,6 +8,8 @@ import Confirm from './Confirm'
 import axios from 'axios'
 import config from '../config';
 import {path} from '../config'
+import { useSelector } from 'react-redux';
+
 //request format after populating
 // {
 //     status: false,
@@ -32,6 +34,9 @@ const ChangePermissions= ({})=>{
     const [records,setRecords] = useState([])
     const {status} = useParams();
     const token = localStorage.getItem('token_id')
+    const {realtime} = useSelector((state)=>state)
+
+
     const allowRequest = (id) => {
         // console.log(id)
         axios.put(`${path}/requestRecord/allow/${id}`,{},{headers:{token}}).then(({})=>{
@@ -53,6 +58,24 @@ const ChangePermissions= ({})=>{
     }
 
     useEffect(()=>{
+
+        
+            axios.get(`${path}/requestRecord/${status}`,{headers:{token}})
+            .then(({data})=>{
+                setRecords(data)
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+      
+       
+        return ()=>{
+            setRecords([])
+            
+        }
+    },[status])
+
+    useEffect(()=>{
         axios.get(`${path}/requestRecord/${status}`,{headers:{token}})
         .then(({data})=>{
             setRecords(data)
@@ -60,10 +83,10 @@ const ChangePermissions= ({})=>{
         .catch((err)=>{
             console.log(err)
         })
-        return ()=>{
-            setRecords([])
-        }
-    },[status])
+  
+   
+
+    },[realtime])
 
 
     return <div className="listofusers">
