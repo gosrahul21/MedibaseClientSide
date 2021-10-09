@@ -1,25 +1,29 @@
 import React,{useState,useEffect} from 'react'
-import { Input } from '@material-ui/core'
+import { Input,Avatar } from '@material-ui/core'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import config, {path} from '../../config'
-export default function PatientAboutEdit({user}) {
+import base64,{upload} from '../../functions/imageUpload'
+export default function PatientAboutEdit() {
 
     const [name,setName] = useState("")
     const [dob,setDob] = useState("")
     const [contactNo,setContact] = useState("")
     const [gender,setGender] = useState("")
     const token = localStorage.getItem('token_id')
-    
-    const patient = useSelector(({patient})=> patient)
+    const [avatar,setAvatar] = useState(null)
+    const [isselected,setSelected]= useState(false)
+    const dispatch = useDispatch();
+    const patient = useSelector(({patient})=>patient)
 
     useEffect(()=>{
         axios.get(`${path}/patient`,{headers:{token}}).
-        then(({data:{name,DOB,contactNo,gender}})=>{
+        then(({data:{name,DOB,contactNo,gender,avatar}})=>{
             setName(name)
             setDob(DOB)
             setContact(contactNo)
             setGender(gender)
+           
 
         }).catch((err)=>{
             console.log(err.data)
@@ -33,7 +37,8 @@ export default function PatientAboutEdit({user}) {
             name,
             DOB:dob,
             gender,
-            contactNo
+            contactNo,
+            avatar
         },{headers:{token}})
         .then(({data})=>{
             console.log(data)
@@ -45,7 +50,8 @@ export default function PatientAboutEdit({user}) {
             name,
             DOB:dob,
             gender,
-            contactNo
+            contactNo,
+            avatar
 
         },
         {headers:{token}}).then(({data})=>{
@@ -106,9 +112,23 @@ export default function PatientAboutEdit({user}) {
                     <input type = "text" placeholder = "City/Village"/>
                 </div> */}
                 
-                <label className="avatar-upload" for ="avatar">Upload Profile Picture </label>
+              {avatar?<Avatar src={avatar}/>:   <label className="avatar-upload" for ="avatar">Select Profile Picture </label>}
                 
-                    <input id='avatar' type = 'file' />
+                    <input id='avatar' onChange={(e)=>{
+                        base64(e.target.files[0]).then((img)=>{
+                            console.log(img);
+                            // setSelected(true)
+                            setAvatar(img)
+                        })
+                        
+                    }} type = 'file' />
+                    <label className="avatar-upload" onClick={()=>{
+                        if(avatar)
+                            upload(avatar,dispatch)
+                        }}>
+                        Upload
+
+                    </label>
                     
                     
                    

@@ -27,7 +27,8 @@ export default function Header() {
     const history = useHistory();
     const {user} = useSelector((state)=> state)
     const token = localStorage.getItem('token_id')
-
+    const audio = new Audio("/ping.mp3")
+    const [online,setOnline]= useState(0)
     // useEffect(()=>{
     //     setTimeout(()=>{
     //         axios.get(`${path}/notification`,{headers:{token}})
@@ -47,6 +48,7 @@ export default function Header() {
         socket.emit('join',{id:user.userId})
         console.log(user.userId,"header section")
         socket.on('requestInserted',(data)=>{
+            audio.play();
             dispatch({
                 type:CHANGE_MADE
             })
@@ -56,6 +58,10 @@ export default function Header() {
             .catch((err)=>console.log("error in fetching notificaion"))
         })
         
+
+        socket.on('onlineUsers',(count)=>{
+            setOnline(count);
+        })
 
         return ()=>{
             socket.disconnect();
@@ -90,6 +96,13 @@ export default function Header() {
         <div className={`navbar ${scrolled&&'scroll'}`}>
             <h1 className="cursor">MediBase</h1>
             { loginUserEmail&&(<div className="nav-right">
+
+            <div className="navRightPart" >
+                <p>{online} online users</p>
+
+            </div>
+
+
                 <SearchPatient 
                     
                     message="Search for Patient by Patient-Id" 
