@@ -4,7 +4,6 @@ import {useHistory} from 'react-router-dom'
 import { ArrowBack, CloseRounded } from '@material-ui/icons';
 import {Button} from '@material-ui/core'
 import axios from 'axios'
-import { path } from '../config';
 import FileUpload from './forms/FileUpload'
 export default function AddMedicalRepo({userId}) {
    
@@ -41,7 +40,7 @@ export default function AddMedicalRepo({userId}) {
 
     const onSubmitHandler = (e)=>{
  
-        axios.post(`${path}/history/${userId}`,{...state,prescription_image:image,medicines},{headers:{token}}).then(({data})=>{ 
+        axios.post(`${process.env.REACT_APP_API}/history/${userId}`,{...state,prescription_image:image,medicines},{headers:{token}}).then(({data})=>{ 
  
             history.goBack();
            

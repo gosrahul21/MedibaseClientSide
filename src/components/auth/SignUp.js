@@ -3,7 +3,7 @@ import './SignUp.css'
 // import {auth,googleAuthProvider} from '../../firebase'
 import { useHistory,Link } from 'react-router-dom';
 import axios from 'axios';
-import {path} from '../../config'
+
 export default function SignUp() {
     const [ email,setEmail] = useState("")
     const [password,setPassword] = useState('')
@@ -30,7 +30,7 @@ export default function SignUp() {
         // })().then(()=>{ console.log("done")}).catch((err)=>{
         //     console.log(err)
         // })
-        axios.post(`${path}/auth/register`,{
+        axios.post(`${process.env.REACT_APP_API}/auth/register`,{
             email,
             password,
             role

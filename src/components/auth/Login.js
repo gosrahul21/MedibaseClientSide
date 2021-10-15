@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import './Login.css'
 import axios from 'axios'
 import { GET_USER } from '../../actions/actionTypes';
-import { path } from '../../config';
 const Login = () => {
 
     const [email,setEmail] = useState("");
@@ -14,7 +13,7 @@ const Login = () => {
 
     const loginSubmit =  (e) => {
         e.preventDefault();
-        axios.post(`${path}/auth/login`,{
+        axios.post(`${process.env.REACT_APP_API}/auth/login`,{
             email,password
         }).then(({data})=>{
             const {userId,name, email,role,avatar,token} = data;

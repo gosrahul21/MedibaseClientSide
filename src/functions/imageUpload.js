@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import { path } from '../config';
+
 
 import { GET_USER } from '../actions/actionTypes';
 
@@ -26,7 +26,7 @@ const getBase64 = file => {
 
 
 export const upload = (img,dispatch)=>{
-    axios.put(`${path}/user`,{avatar:img},{
+    axios.put(`${process.env.REACT_APP_API}/user`,{avatar:img},{
         headers:{
             token:localStorage.getItem('token_id')
         }

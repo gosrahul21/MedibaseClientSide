@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { Input } from '@material-ui/core'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import {path} from '../../config'
+
 
 export default function PatientAboutEdit() {
 
@@ -16,7 +16,7 @@ export default function PatientAboutEdit() {
     const patient = useSelector(({patient})=>patient)
 
     useEffect(()=>{
-        axios.get(`${path}/patient`,{headers:{token}})
+        axios.get(`${process.env.REACT_APP_API}/patient`,{headers:{token}})
         .then(({data:{name,DOB,contactNo,gender}})=>{
             setName(name)
             setDob(DOB)
@@ -32,7 +32,7 @@ export default function PatientAboutEdit() {
     const onSubmitHandler = (e) => {
         e.preventDefault();
         if(!patient)
-        return axios.post(`${path}/patient/`,{
+        return axios.post(`${process.env.REACT_APP_API}/patient/`,{
             name,
             DOB:dob,
             gender,
@@ -44,7 +44,7 @@ export default function PatientAboutEdit() {
             console.log(data)
         })
 
-        return axios.put(`${path}/patient/${patient._id}`,{
+        return axios.put(`${process.env.REACT_APP_API}/patient/${patient._id}`,{
             name,
             DOB:dob,
             gender,

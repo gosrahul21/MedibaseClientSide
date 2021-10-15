@@ -3,7 +3,7 @@ import { Input } from '@material-ui/core'
 import {useDispatch,useSelector} from 'react-redux'
 import axios from 'axios'
 import {GET_DOCTOR_ABOUT} from '../../actions/actionTypes'
-import {path} from '../../config'
+
 function DoctorAboutEdit({user,type}) {
     
     const [name,setName] = useState("")
@@ -20,7 +20,7 @@ function DoctorAboutEdit({user,type}) {
     const onSubmitHandler = (e) => {
         e.preventDefault();
         if(!doctor)
-        return axios.post(`${path}/doctor`,{
+        return axios.post(`${process.env.REACT_APP_API}/doctor`,{
             name,
             DOB:dob,
             gender,
@@ -41,7 +41,7 @@ function DoctorAboutEdit({user,type}) {
         })
 
 
-        axios.put(`${path}/doctor/${doctor._id}`,{
+        axios.put(`${process.env.REACT_APP_API}/doctor/${doctor._id}`,{
             name,
             DOB:dob,
             gender,

@@ -2,7 +2,6 @@ import React,{useState,useEffect} from 'react'
 import './RecordDisplay.css'
 import axios from 'axios'
 import {useHistory} from 'react-router-dom'
-import {path} from '../config'
 import { Button,CircularProgress } from '@material-ui/core'
 import {ArrowBack} from '@material-ui/icons'
 
@@ -14,7 +13,7 @@ function RecordDisplay() {
     const token = localStorage.getItem('token_id')
     useEffect(()=>{
         setLoading(true)
-        axios.get(`${path}/history`,{headers:{token}})
+        axios.get(`${process.env.REACT_APP_API}/history`,{headers:{token}})
         .then(({data})=>{
             setHistory(data)
             setLoading(false)

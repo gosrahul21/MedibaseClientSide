@@ -6,7 +6,6 @@ import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import {Avatar,CircularProgress} from '@material-ui/core'
 import Confirm from './Confirm'
 import axios from 'axios'
-import {path} from '../config'
 import { useSelector } from 'react-redux';
 
 //request format after populating
@@ -39,7 +38,7 @@ const ChangePermissions= ()=>{
 
     const allowRequest = (id) => {
         // console.log(id)
-        axios.put(`${path}/requestRecord/allow/${id}`,{},{headers:{token}}).then(()=>{
+        axios.put(`${process.env.REACT_APP_API}/requestRecord/allow/${id}`,{},{headers:{token}}).then(()=>{
             setRecords(records.filter((rec)=>rec._id!==id))
         }).catch((err)=>{
             console.log(err.data)
@@ -49,7 +48,7 @@ const ChangePermissions= ()=>{
 
     const revokeRequest = (id)=>{
 
-        axios.delete(`${path}/requestRecord/${id}`,{headers:{token}}).then(()=>{
+        axios.delete(`${process.env.REACT_APP_API}/requestRecord/${id}`,{headers:{token}}).then(()=>{
             setRecords(records.filter((rec)=>rec._id!==id))
         }).catch((err)=>{
             console.log(err.data)
@@ -60,7 +59,7 @@ const ChangePermissions= ()=>{
     useEffect(()=>{
 
             setLoading(true)
-            axios.get(`${path}/requestRecord/${status}`,{headers:{token}})
+            axios.get(`${process.env.REACT_APP_API}/requestRecord/${status}`,{headers:{token}})
             .then(({data})=>{
                 setRecords(data)
                 setLoading(false)
@@ -79,7 +78,7 @@ const ChangePermissions= ()=>{
 
 
     useEffect(()=>{
-        axios.get(`${path}/requestRecord/${status}`,{headers:{token}})
+        axios.get(`${process.env.REACT_APP_API}/requestRecord/${status}`,{headers:{token}})
         .then(({data})=>{
             setRecords(data)
         })
@@ -89,7 +88,7 @@ const ChangePermissions= ()=>{
     },[realtime,status,token])
 
    const renderItems = ()=>  records.map(({_id,to,name,type})=>(
-        <div className="userAllowed">
+        <div className="userAllowed" key={_id}>
             
                 
             
@@ -105,8 +104,6 @@ const ChangePermissions= ()=>{
             </Link>
                 
             {to.role==='doctor'&& <LocalHospitalIcon style={{color:"green"}}/>}
-            
-
             
         </div>
         

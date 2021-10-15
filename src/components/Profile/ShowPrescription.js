@@ -4,7 +4,6 @@ import {AddCircle} from '@material-ui/icons'
 import { IconButton,CircularProgress } from '@material-ui/core'
 import {useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
-import {path} from '../../config'
 import axios from 'axios'
 
 export default function ShowPrescription({email,type,userId}) {
@@ -15,7 +14,7 @@ export default function ShowPrescription({email,type,userId}) {
 
     useEffect(()=>{
         setLoading(true)
-        axios.get(`${path}/history/${userId}`,{headers: {token:localStorage.getItem('token_id')}})
+        axios.get(`${process.env.REACT_APP_API}/history/${userId}`,{headers: {token:localStorage.getItem('token_id')}})
         .then(({data})=>{
             setHistories(data)
             setLoading(false)

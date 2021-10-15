@@ -12,7 +12,7 @@ import SearchPatient from '../../SearchPatient'
 import Popup from '../../Popup'
 import { CHANGE_MADE, LOGOUT_USER } from '../../actions/actionTypes';
 import axios from 'axios';
-import  { path } from '../../config'
+
 import io from 'socket.io-client'
 
 export default function Header() {
@@ -36,12 +36,12 @@ export default function Header() {
     // })
 
     useEffect(()=>{
-        axios.get(`${path}/notification`,{headers:{token}})
+        axios.get(`${process.env.REACT_APP_API}/notification`,{headers:{token}})
         .then(({data})=>setNotification(data))
         .catch((err)=>console.log("error in fetching notificaion"))
 
-        // const socket_path= 'ws://medihistorybase.herokuapp.com/'
-        const socket = io('ws://localhost:7000',{ transports: ['websocket', 'polling', 'flashsocket'] })
+        const socket_path= 'ws://medihistorybase.herokuapp.com/'
+        const socket = io(socket_path,{ transports: ['websocket', 'polling', 'flashsocket'] })
 
         socket.emit('join',{id:user.userId})
         socket.on('requestInserted',(data)=>{
@@ -50,7 +50,7 @@ export default function Header() {
             dispatch({
                 type:CHANGE_MADE
             })
-            axios.get(`${path}/notification`,{headers:{token}})
+            axios.get(`${process.env.REACT_APP_API}/notification`,{headers:{token}})
             .then(({data})=>setNotification(data))
             .catch((err)=>console.log("error in fetching notificaion"))
         })

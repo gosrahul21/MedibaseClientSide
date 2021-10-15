@@ -15,7 +15,7 @@ import About from './components/Profile/About';
 import PrivateRoute from './PrivateRoute'
 import {useDispatch,useSelector} from 'react-redux'
 import {  GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER } from './actions/actionTypes';
-import {path} from './config';
+
 
 
 
@@ -35,7 +35,7 @@ const App = () => {
         
         if(token){
             //request the user details
-            axios.get(`${path}/auth`,{headers:{token}}).then(({data})=>{
+            axios.get(`${process.env.REACT_APP_API}/auth`,{headers:{token}}).then(({data})=>{
                 const {userId,name, email,role,avatar} = data;
                 dispatch({
                     type:GET_USER,
@@ -60,7 +60,7 @@ const App = () => {
        
             if(user.role === 'patient'){
                 //login user is patient
-                axios.get(`${path}/patient`,{headers:{token}})
+                axios.get(`${process.env.REACT_APP_API}/patient`,{headers:{token}})
                 .then(({data})=>{
                     dispatch({
                         type:GET_NORM_USER_ABOUT,
@@ -73,7 +73,7 @@ const App = () => {
                 })
             }else{
                 //login user is doctor
-                axios.get(`${path}/doctor`,{headers:{token}}).then(({data})=>{
+                axios.get(`${process.env.REACT_APP_API}/doctor`,{headers:{token}}).then(({data})=>{
                     dispatch({
                         type:GET_DOCTOR_ABOUT,
                         payload:data

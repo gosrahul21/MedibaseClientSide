@@ -6,7 +6,6 @@ import { useHistory,useParams } from 'react-router'
 import { Button,IconButton ,CircularProgress} from '@material-ui/core'
 import { useSelector,useDispatch } from 'react-redux'
 import axios from 'axios'
-import {path} from '../../config'
 import RenderProfileRoute from '../../RenderProfileRoute'
 import base64,{upload} from '../../functions/imageUpload'
 
@@ -32,7 +31,7 @@ const Profile = () => {
 
       if(!token ) return;
         setLoading(true)
-      axios.post(`${path}/user/email/`,{email},{headers:{token}}).then(({data})=>{
+      axios.post(`${process.env.REACT_APP_API}/user/email/`,{email},{headers:{token}}).then(({data})=>{
 
         setTargetUser(data);
         setLoading(false)
@@ -56,7 +55,7 @@ const Profile = () => {
 
     useEffect(()=>{
         if(!targetUser) return
-        axios.get(`${path}/requestRecord/record-status/${targetUser.id}`,{headers:{token:localStorage.getItem('token_id')}})
+        axios.get(`${process.env.REACT_APP_API}/requestRecord/record-status/${targetUser.id}`,{headers:{token:localStorage.getItem('token_id')}})
         .then(({data})=>
             {
                 setRequestStatus(data)
@@ -74,7 +73,7 @@ const Profile = () => {
 
     const request =(e,type)=>{
         
-        axios.post(`${path}/request`,{to:targetUser.id,type},{headers:{token}})
+        axios.post(`${process.env.REACT_APP_API}/request`,{to:targetUser.id,type},{headers:{token}})
         .then(({data})=>{
             setRequestStatus(data)
             // setPrescribe('Presribe Requested')
@@ -85,7 +84,7 @@ const Profile = () => {
     }
     
     const deleteRequest=()=>{
-        axios.delete(`${path}/requestRecord/${requestStatus._id}`,{headers:{token}})
+        axios.delete(`${process.env.REACT_APP_API}/requestRecord/${requestStatus._id}`,{headers:{token}})
         .then(()=>setRequestStatus(null)).catch(({data})=>{
             console.log(data)
         })

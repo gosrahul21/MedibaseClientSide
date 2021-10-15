@@ -8,7 +8,7 @@ function Home() {
     const [doctors,setDoctors] = useState([])
     const token = localStorage.getItem('token_id')
     useEffect(()=>{
-        axios.get('http://localhost:8000/doctor/all',{headers:{token}}).then(({data})=>{
+        axios.get(`${process.env.REACT_APP_API}/doctor/all`,{headers:{token}}).then(({data})=>{
             setDoctors(data)
         }).catch((err)=>setDoctors([]))
     },[token])

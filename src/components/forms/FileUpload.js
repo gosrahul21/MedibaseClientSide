@@ -3,7 +3,7 @@ import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { IconButton,CircularProgress } from "@material-ui/core";
 import {PhotoCamera,CancelOutlined} from '@material-ui/icons'
-import {path} from '../../config'
+
 import './FileUpload.css'
 const FileUpload = ({ images, setImages}) => {
   const [loading,setLoading] = useState(false)
@@ -24,7 +24,7 @@ const FileUpload = ({ images, setImages}) => {
           0,
           (uri) => {
             axios.post(
-                `${path}/image`,
+                `${process.env.REACT_APP_API}/image`,
                 { image: uri },
                 {
                   headers: {
