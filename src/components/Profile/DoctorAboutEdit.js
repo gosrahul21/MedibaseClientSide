@@ -3,7 +3,7 @@ import { Input } from '@material-ui/core'
 import {useDispatch,useSelector} from 'react-redux'
 import axios from 'axios'
 import {GET_DOCTOR_ABOUT} from '../../actions/actionTypes'
-import config,{path} from '../../config'
+import {path} from '../../config'
 function DoctorAboutEdit({user,type}) {
     
     const [name,setName] = useState("")
@@ -138,11 +138,6 @@ function DoctorAboutEdit({user,type}) {
                     <option value="private">Private</option>
                     <option value="others">Others</option>
                 </select>
-
-                <label className="avatar-upload" for ="avatar">Upload Profile Picture </label>
-                <input id='avatar' type = 'file' />
-                    
-                    
                    
 
                 <button 

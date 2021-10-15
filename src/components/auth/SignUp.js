@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import './SignUp.css'
-import {auth,googleAuthProvider} from '../../firebase'
+// import {auth,googleAuthProvider} from '../../firebase'
 import { useHistory,Link } from 'react-router-dom';
 import axios from 'axios';
 import {path} from '../../config'
@@ -35,8 +35,7 @@ export default function SignUp() {
             password,
             role
         }).then(({data})=>{
-            const {email,role,success} = 
-            data
+            const {success} = data
             if(success)
                 return history.push('/login')
             else

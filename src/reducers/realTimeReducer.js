@@ -1,5 +1,5 @@
 import { CHANGE_MADE } from "../actions/actionTypes";
-export default (state=false,action) =>{
+const realTimeReducer= (state=false,action) =>{
     switch(action.type){
         case CHANGE_MADE:
             return !state;
@@ -7,3 +7,5 @@ export default (state=false,action) =>{
             return state;
     }
 }
+
+export default realTimeReducer;

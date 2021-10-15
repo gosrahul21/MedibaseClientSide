@@ -7,11 +7,11 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 
 // import { Redirect ,history} from 'react-router';
-import { useHistory } from 'react-router';
+
 
 const Popup = ({className,message,children,summary,callback}) => {
     const [open, setOpen] = useState(false);
-    const history = useHistory();
+
 
   const handleClickOpen = () => {
     setOpen(true);

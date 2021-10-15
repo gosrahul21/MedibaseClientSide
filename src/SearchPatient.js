@@ -1,5 +1,5 @@
 
-import React,{useState} from 'react';
+import React from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -7,9 +7,10 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input'
-import { Redirect ,history} from 'react-router';
+
 import { useHistory } from 'react-router';
-import axios from 'axios'
+
+
 
 const SearchPatient = ({message,children,setEmail,email}) => {
     const [open, setOpen] = React.useState(false);
@@ -31,14 +32,14 @@ const SearchPatient = ({message,children,setEmail,email}) => {
 
   return (
     <div>
-      <Button variant="outlined" 
+      <Button style={{padding:0}}variant="outlined" 
                 
               color="primary" onClick={handleClickOpen}>
                   {children}
                   
         </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
+      <Dialog open={open}  onClose={handleClose}>
+        <DialogTitle disableTypography={false} className="dialogTitle">
             {/* message to be put here */}
            Search Other Users/Friends
         </DialogTitle>
@@ -49,7 +50,7 @@ const SearchPatient = ({message,children,setEmail,email}) => {
             <Input onChange={(e)=>setEmail(e.target.value)} value={email} placeholder="Patient Id"/>
         </DialogContent>
         <DialogActions>
-          <Button variant = "outlined" onClick={redirect} color="primary">
+          <Button style={{padding:0}} variant = "outlined" onClick={redirect} color="primary">
            Search
           </Button>
         </DialogActions>

@@ -9,7 +9,6 @@
 
 .login>form{
     display: flex;
-   
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -37,7 +36,6 @@
 
 h1{
     color:rgba(137, 43, 226, 0.884);
- 
     font-weight: bolder;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }

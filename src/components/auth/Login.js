@@ -3,7 +3,7 @@ import {useHistory,Link} from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import './Login.css'
 import axios from 'axios'
-import { ADD_USER, GET_USER, GET__USER } from '../../actions/actionTypes';
+import { GET_USER } from '../../actions/actionTypes';
 import { path } from '../../config';
 const Login = () => {
 
@@ -17,13 +17,14 @@ const Login = () => {
         axios.post(`${path}/auth/login`,{
             email,password
         }).then(({data})=>{
-            const {userId, email,role,avatar,token} = data;
+            const {userId,name, email,role,avatar,token} = data;
             //store the token in localstorage
            localStorage.setItem('token_id',token)
            dispatch({
                type:GET_USER,
                payload:{
                    userId,
+                   name,
                    email,
                    role,
                    avatar

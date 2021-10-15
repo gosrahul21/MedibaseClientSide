@@ -1,8 +1,118 @@
-.addRepo{
 
-    background-color: red;
-    padding:5%;
-    height: 100vh;
-
+.addRepo__main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* background-color: red; */
+    width:100%;
 }
 
+.addRepo{
+
+
+    /* background-color: blue; */
+    /* padding:5%;
+    height: 100vh; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    width:440px;
+    /* padding-left: 15px; */
+    justify-content: space-between;
+}
+
+
+.addRepo > input {
+
+    padding:10px;
+    margin:5px 0;
+    width:100%;
+    border:transparent;
+    border-radius: 10px;
+    font-size:medium;
+    /* border-bottom: 2px solid purple; */
+    color:rgb(110, 108, 108);
+    box-shadow: 0 0 1px 0 purple;
+    /* outline-color:blueviolet; */
+    transition:.5s all;
+}
+label{
+    width:100%;
+
+}
+.addRepo>input:hover{
+    background-color: rgba(211, 211, 211, 0.274);
+    
+    outline-color:purple;
+    
+    /* border:1px solid blueviolet; */
+}
+
+
+.medicines__list{
+    display: flex;
+    flex-wrap: wrap
+}
+
+.med__item{
+    display: flex;
+    align-items: center;
+    background-color: rgba(211, 211, 211, 0.274);
+    width:fit-content;
+    padding-right: 0 5px;
+    margin:3px 3px;
+    border-radius: 7px;
+    color:rgb(110, 108, 108);
+    box-shadow: 0 0 1px 0 purple;
+}
+
+.med__item> .MuiSvgIcon-root{
+    cursor: pointer;
+    
+}
+
+
+/* .addRepo > button {
+
+    border-radius: 10px;
+    cursor:pointer;
+    cursor: pointer;
+    color:white;
+    background-image: linear-gradient(0deg, rgb(59, 148, 17), rgb(152, 233, 60));
+    width: 100%;
+    padding:10px;
+    outline:none;
+    font-weight: 600;
+    margin-top: 10px;;
+    border:transparent;
+} */
+.addRepo > button:active{
+    transform: scale(0.99);
+    box-shadow: 1px 0 3px 0 rgb(219, 230, 214);
+} 
+
+
+.addRepo__header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content:center;
+}
+
+.addRepo__header > h2{
+    flex:1;
+}
+
+.addRepo__main > .back__link{
+    left:0;
+    top:0;
+    position: absolute;
+}
+
+.MuiSvgIcon-root{
+    padding:0;
+}

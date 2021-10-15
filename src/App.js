@@ -1,8 +1,7 @@
 import React,{useEffect} from 'react'
-import {BrowserRouter as Router,
+import {
 Route,Switch} from 'react-router-dom';
 import axios from 'axios'
-import {useHistory} from 'react-router-dom'
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import Header from './components/Header/Header';
@@ -15,14 +14,14 @@ import Profile from './components/Profile/Profile';
 import About from './components/Profile/About';
 import PrivateRoute from './PrivateRoute'
 import {useDispatch,useSelector} from 'react-redux'
-import { ADD_SOCKET, GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER, REMOVE_SOCKET } from './actions/actionTypes';
-import config,{path} from './config';
+import {  GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER } from './actions/actionTypes';
+import {path} from './config';
 
-import io from 'socket.io-client'
+
 
 const App = () => {
     
-    const history = useHistory();
+
     const dispatch = useDispatch();
     const user = useSelector((state)=> state.user)
     const token = localStorage.getItem('token_id');
@@ -36,13 +35,13 @@ const App = () => {
         
         if(token){
             //request the user details
-            console.log(token)
             axios.get(`${path}/auth`,{headers:{token}}).then(({data})=>{
-                const {userId, email,role,avatar} = data;
+                const {userId,name, email,role,avatar} = data;
                 dispatch({
                     type:GET_USER,
                     payload:{
                         userId,
+                        name,
                         email,
                         role,
                         avatar
@@ -52,13 +51,13 @@ const App = () => {
                 console.log(err.data)
             })
         }
-    },[])
+    },[dispatch,token])
    
 
     useEffect(()=>{
        
         if(user.email){
-            console.log(token)
+       
             if(user.role === 'patient'){
                 //login user is patient
                 axios.get(`${path}/patient`,{headers:{token}})
@@ -88,7 +87,7 @@ const App = () => {
             }
         }
 
-    },[user])
+    },[user,token,dispatch])
 
 
     
@@ -100,13 +99,13 @@ const App = () => {
                 <Route exact path="/signup" component={SignUp}/>
                 <Route exact path="/login" component={Login}/>
                 <PrivateRoute exact path="/records" component={RecordDisplay}></PrivateRoute>
-                <PrivateRoute exact path="/addrepo" component={AddMedicalRepo}/>
+                <Route exact path="/addrepo" component={AddMedicalRepo}/>
                 <PrivateRoute exact path = '/settings' component={Setting}/>
                 <PrivateRoute exact path = '/permission/:status' component={ChangePermisssions}></PrivateRoute>
                 {/* <PrivateRoute exact path = '/myprofile'><Profile/></PrivateRoute> */}
-                <PrivateRoute exact path = '/search-profile/:email' component={Profile}></PrivateRoute>
+                <PrivateRoute exact path = '/search-profile/:email/' component={Profile}></PrivateRoute>
                 <PrivateRoute exact path= "/about" component={About}/>
-                
+              
             </Switch>
         </>
       

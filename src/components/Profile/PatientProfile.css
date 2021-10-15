@@ -1,0 +1,18 @@
+
+
+.show_profile{
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    margin-left: 15px;;
+    
+}
+.row{
+    display: flex;
+    margin-top: 3px;
+}
+
+.row > h3, p,span {
+    
+    padding:10px 10px;
+}

@@ -33,7 +33,7 @@ const Confirm = ({Icon,children,message,callback,type,id}) => {
                   
         </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
+        <DialogTitle disableTypography={false}>
             {/* message to be put here */}
            Confirm 
         </DialogTitle>

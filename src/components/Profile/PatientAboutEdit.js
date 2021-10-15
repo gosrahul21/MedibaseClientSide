@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react'
-import { Input,Avatar } from '@material-ui/core'
+import { Input } from '@material-ui/core'
 import axios from 'axios'
-import { useSelector,useDispatch } from 'react-redux'
-import config, {path} from '../../config'
-import base64,{upload} from '../../functions/imageUpload'
+import { useSelector } from 'react-redux'
+import {path} from '../../config'
+
 export default function PatientAboutEdit() {
 
     const [name,setName] = useState("")
@@ -11,14 +11,13 @@ export default function PatientAboutEdit() {
     const [contactNo,setContact] = useState("")
     const [gender,setGender] = useState("")
     const token = localStorage.getItem('token_id')
-    const [avatar,setAvatar] = useState(null)
-    const [isselected,setSelected]= useState(false)
-    const dispatch = useDispatch();
+
+
     const patient = useSelector(({patient})=>patient)
 
     useEffect(()=>{
-        axios.get(`${path}/patient`,{headers:{token}}).
-        then(({data:{name,DOB,contactNo,gender,avatar}})=>{
+        axios.get(`${path}/patient`,{headers:{token}})
+        .then(({data:{name,DOB,contactNo,gender}})=>{
             setName(name)
             setDob(DOB)
             setContact(contactNo)
@@ -28,7 +27,7 @@ export default function PatientAboutEdit() {
         }).catch((err)=>{
             console.log(err.data)
         })
-    },[])
+    },[token])
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -37,8 +36,7 @@ export default function PatientAboutEdit() {
             name,
             DOB:dob,
             gender,
-            contactNo,
-            avatar
+            contactNo
         },{headers:{token}})
         .then(({data})=>{
             console.log(data)
@@ -51,7 +49,7 @@ export default function PatientAboutEdit() {
             DOB:dob,
             gender,
             contactNo,
-            avatar
+            
 
         },
         {headers:{token}}).then(({data})=>{
@@ -65,8 +63,6 @@ export default function PatientAboutEdit() {
 
         
     }
-
-
     return (
         <div>
             <form className="about__form" onSubmit={onSubmitHandler}>
@@ -112,23 +108,7 @@ export default function PatientAboutEdit() {
                     <input type = "text" placeholder = "City/Village"/>
                 </div> */}
                 
-              {avatar?<Avatar src={avatar}/>:   <label className="avatar-upload" for ="avatar">Select Profile Picture </label>}
-                
-                    <input id='avatar' onChange={(e)=>{
-                        base64(e.target.files[0]).then((img)=>{
-                            console.log(img);
-                            // setSelected(true)
-                            setAvatar(img)
-                        })
-                        
-                    }} type = 'file' />
-                    <label className="avatar-upload" onClick={()=>{
-                        if(avatar)
-                            upload(avatar,dispatch)
-                        }}>
-                        Upload
 
-                    </label>
                     
                     
                    

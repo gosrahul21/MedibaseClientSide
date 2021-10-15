@@ -6,11 +6,9 @@ import { GET_USER } from '../actions/actionTypes';
 
 const getBase64 = file => {
     return new Promise(resolve => {
-      let fileInfo;
       let baseURL = "";
       // Make new FileReader
       let reader = new FileReader();
-
       // Convert the file to base64 text
       reader.readAsDataURL(file);
 

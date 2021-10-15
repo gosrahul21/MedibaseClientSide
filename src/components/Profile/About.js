@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import './About.css'
 import {useSelector} from 'react-redux'
 import DoctorAboutEdit from './DoctorAboutEdit'
@@ -10,8 +10,6 @@ function About() {
    
     
     const user = useSelector(({user})=>user)
-   
-    const token = localStorage.getItem('token_id')
 
 
 

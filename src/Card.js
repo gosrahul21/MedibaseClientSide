@@ -53,7 +53,7 @@ export default function RecipeReviewCard({avatar,name,verified}) {
       <CardHeader
         avatar={
           <Avatar  aria-label="recipe" className={classes.avatar}>
-            <img src={avatar}/>
+            <img alt="" src={avatar}/>
           </Avatar>
         }
         action={

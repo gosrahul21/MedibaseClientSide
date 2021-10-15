@@ -6,8 +6,8 @@ import {
 
 const initialState = {}
 
-export default (state=initialState,action)=>{
-    console.log(action.type)
+const userReducer =  (state=initialState,action) =>{
+
     switch(action.type){
         case GET_USER:
         case LOGIN_USER:
@@ -21,3 +21,5 @@ export default (state=initialState,action)=>{
             return state
     }
 }
+
+export default userReducer;

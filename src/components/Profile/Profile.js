@@ -1,13 +1,14 @@
 import React ,{useEffect,useState} from 'react'
 import './Profile.css'
-import Avatar from '@material-ui/core/Avatar'
 import SettingsIcon from '@material-ui/icons/Settings'
-import {FileCopy} from '@material-ui/icons'
+import {PhotoCamera} from '@material-ui/icons'
 import { useHistory,useParams } from 'react-router'
-import { Button,IconButton ,CircularProgress,Box} from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { Button,IconButton ,CircularProgress} from '@material-ui/core'
+import { useSelector,useDispatch } from 'react-redux'
 import axios from 'axios'
-import config,{path} from '../../config'
+import {path} from '../../config'
+import RenderProfileRoute from '../../RenderProfileRoute'
+import base64,{upload} from '../../functions/imageUpload'
 
 
 
@@ -19,8 +20,10 @@ const Profile = () => {
     const [targetUser,setTargetUser] = useState(null);
     const {user,doctor,realtime} = useSelector((state)=>state)
     const token = localStorage.getItem('token_id')
-    const [prescribe,setPrescribe] = useState('Request Presribe')
     const [requestStatus,setRequestStatus] = useState(null);
+    const dispatch = useDispatch()
+    // const [pending,setPending] = useState(null)   //pending request for current user
+    // const [granted,setGranted] = useState(null)   //granted access request given by current user
     
     
     useEffect(()=>{
@@ -29,38 +32,40 @@ const Profile = () => {
 
       if(!token ) return;
         setLoading(true)
-        console.log(path)
       axios.post(`${path}/user/email/`,{email},{headers:{token}}).then(({data})=>{
-        
 
-        
-        
         setTargetUser(data);
         setLoading(false)
       }).catch((err)=>{
 
+ 
+       
         if(user.email===email)
             history.push('/about')
-          
-          setTargetUser(null);
-          setLoading(false)
+        setTargetUser(null);
+        setLoading(false)
+
       })
       return ()=>{
+
           setTargetUser(null)
           setRequestStatus(null)
       }
       
-    },[email])
+    },[email,token,history,user.email])
 
     useEffect(()=>{
         if(!targetUser) return
-        axios.get(`${path}/requestRecord/record-status/${targetUser.id}`,config)
+        axios.get(`${path}/requestRecord/record-status/${targetUser.id}`,{headers:{token:localStorage.getItem('token_id')}})
         .then(({data})=>
             {
                 setRequestStatus(data)
                 setLoading(false)
             })
             .catch(()=>setRequestStatus(null))
+
+
+        
             return ()=>{
                
                 setRequestStatus(null)
@@ -80,11 +85,13 @@ const Profile = () => {
     }
     
     const deleteRequest=()=>{
-        axios.delete(`${path}/requestRecord/${requestStatus._id}`,{headers:{token}}).
-        then(({data})=>setRequestStatus(null)).catch(({data})=>{
+        axios.delete(`${path}/requestRecord/${requestStatus._id}`,{headers:{token}})
+        .then(()=>setRequestStatus(null)).catch(({data})=>{
             console.log(data)
         })
     }
+
+    
 
     return (
         <div className="profile">
@@ -93,7 +100,45 @@ const Profile = () => {
             <div className="profile__top">
 
                 {/* avatar */}
-                <img src={targetUser.avatar?targetUser.avatar:"#"} className="profile__img"/>
+                <div style={{
+                    backgroundImage:`url(${user.email===email?user.avatar:targetUser?.avatar})`
+                }}  className="profile__img">
+
+                   {user.email===email
+                   &&(<div className="profile__change">
+                       <label  htmlFor='avatar' style={{cursor:"pointer",
+                       display:"flex"
+                       ,flexDirection:"column",
+                       justifyContent:"center",
+                       alignItems:"center"
+                       }}>
+                       
+                       <IconButton  component="span">
+                           <PhotoCamera/>
+                        </IconButton>
+                            
+
+                                Change Profile Photo
+
+                                <input name='avatar' id='avatar' onChange={(e)=>{
+                            base64(e.target.files[0]).then((img)=>{
+                                
+                                // setSelected(true)
+                                upload(img,dispatch)
+                            })
+                            
+                        }} accept='image/*' type = 'file' />
+                    
+                            </label>
+                       
+                        
+                       
+                     
+                    </div>)}
+                    
+                    
+                    </div>
+                
                 <div className="name">
                     <h1>{(targetUser.patient?.name)||(targetUser.doctor?.name)}</h1>
                     <div className="name__id">
@@ -150,13 +195,16 @@ const Profile = () => {
             </div>
      
             {/* edit option */}
-            <div className="profile__row">
+            
             {/* Permissions */}
             {/* activities */}
+{/* 
+            if request does not exist then don't show the profile*/}
+              {(requestStatus&& requestStatus.status)|| (user.email===email) ?(<div className="profile__row">
+                  <RenderProfileRoute userId={targetUser.id} type={requestStatus?.type} email={email}/>
+                  </div>)
+                  :<h2>{`You don't have permission to access the ${(targetUser.patient?.name)||(targetUser.doctor?.name)}'s profile`}</h2>}
 
-            </div>
-            
-                
              {/* medical history */}
              </>):(loading?(
             <CircularProgress color="inherit" />):<h1>This user don't have profile</h1>)}

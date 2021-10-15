@@ -4,10 +4,10 @@ import { Link,useHistory } from 'react-router-dom'
 import {useDispatch,useSelector} from 'react-redux'
 import SettingsIcon from '@material-ui/icons/Settings';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import MessageIcon from '@material-ui/icons/Message';
+
 import {Badge,Avatar}  from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Notification from '../Notification';
+
 import SearchPatient from '../../SearchPatient'
 import Popup from '../../Popup'
 import { CHANGE_MADE, LOGOUT_USER } from '../../actions/actionTypes';
@@ -16,18 +16,16 @@ import  { path } from '../../config'
 import io from 'socket.io-client'
 
 export default function Header() {
-    const [scrolled,setScrolled] = useState(false);
     const [showNotification,setShowNotification] = useState(false);
     const [notification,setNotification] = useState([]);
-    const [logout,setLogout] = useState(false);
-    const [makeNotificationRequest,setMakeNotificationRequest] = useState(false)
+
 
     const [email,setEmail] = useState(''); //search by email id
     const dispatch = useDispatch()
     const history = useHistory();
     const {user} = useSelector((state)=> state)
     const token = localStorage.getItem('token_id')
-    const audio = new Audio("/ping.mp3")
+
     const [online,setOnline]= useState(0)
     // useEffect(()=>{
     //     setTimeout(()=>{
@@ -42,17 +40,16 @@ export default function Header() {
         .then(({data})=>setNotification(data))
         .catch((err)=>console.log("error in fetching notificaion"))
 
-
-        const socket = io('ws://localhost:8000',{ transports: ['websocket', 'polling', 'flashsocket'] })
+        // const socket_path= 'ws://medihistorybase.herokuapp.com/'
+        const socket = io('ws://localhost:7000',{ transports: ['websocket', 'polling', 'flashsocket'] })
 
         socket.emit('join',{id:user.userId})
-        console.log(user.userId,"header section")
         socket.on('requestInserted',(data)=>{
+            const audio = new Audio("/ping.mp3")
             audio.play();
             dispatch({
                 type:CHANGE_MADE
             })
-            console.log("request inserted",data)
             axios.get(`${path}/notification`,{headers:{token}})
             .then(({data})=>setNotification(data))
             .catch((err)=>console.log("error in fetching notificaion"))
@@ -68,7 +65,7 @@ export default function Header() {
             socket.off();
         }
 
-    },[])
+    },[token,dispatch,user.userId])
     
     // if(user.email)
     // axios.get(`${path}/notification',{headers:{
@@ -80,7 +77,7 @@ export default function Header() {
     
       const notificationClick = () =>{
         setShowNotification(!showNotification)
-        console.log(showNotification)
+      
       }
 
       const logoutHandle = ()=>{
@@ -93,7 +90,7 @@ export default function Header() {
 
 
     return (
-        <div className={`navbar ${scrolled&&'scroll'}`}>
+        <div className={`navbar`}>
             <h1 className="cursor">MediBase</h1>
             { loginUserEmail&&(<div className="nav-right">
 
@@ -105,7 +102,7 @@ export default function Header() {
 
                 <SearchPatient 
                     
-                    message="Search for Patient by Patient-Id" 
+                    message="Search for patient by their email address" 
                     setEmail={setEmail} 
                     email={email}>
                     Search For Patient
@@ -122,7 +119,7 @@ export default function Header() {
 {/*             
             <div className="navRightPart">
                   <Badge  onClick={notificationClick} badgeContent={1} color="primary" >
-                      <MessageIcon fontSize="medium" style={{color:"blue"}}/>
+                      <MessageIcon fontSize="small" style={{color:"blue"}}/>
                   </Badge>
             </div> */}
             
@@ -130,8 +127,8 @@ export default function Header() {
             
             <div className="navRightPart" >
                 <Link to='/permission/pending'> 
-                    <Badge  onClick={notificationClick} badgeContent={notification.length} color="primary" >
-                        <NotificationsIcon fontSize="medium" style={{color:"blue"}}/>
+                    <Badge  onClick={notificationClick} style={{padding:0}} badgeContent={notification.length} color="primary" >
+                        <NotificationsIcon fontSize="default" style={{color:"blue"}}/>
                     </Badge>
                 </Link>
               
@@ -142,7 +139,7 @@ export default function Header() {
 
             
                <div className="navRightPart">
-               <Link to='/settings' className="navRightPart rotate"><SettingsIcon/></Link>
+                <SettingsIcon/>
              
                <div className="dropdown">
                   <Link to='/permission/granted'>Granted User</Link>
