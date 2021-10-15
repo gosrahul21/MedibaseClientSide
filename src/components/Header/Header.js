@@ -40,8 +40,8 @@ export default function Header() {
         .then(({data})=>setNotification(data))
         .catch((err)=>console.log("error in fetching notificaion"))
 
-        const socket_path= 'ws://medihistorybase.herokuapp.com/'
-        const socket = io(socket_path,{ transports: ['websocket', 'polling', 'flashsocket'] })
+        // const socket_path= 'https://medihistorybase.herokuapp.com/'
+        const socket = io(process.env.REACT_APP_API,{ transports: ['websocket', 'polling', 'flashsocket'] })
 
         socket.emit('join',{id:user.userId})
         socket.on('requestInserted',(data)=>{

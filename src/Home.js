@@ -16,12 +16,12 @@ function Home() {
 
     return (
         <div className="Home">
-            {/* fetch doctors */}
+            {/* fetch doctors
             {
-                doctors.map(({name,avatar})=>{
+               doctors.length? doctors.map(({name,avatar})=>{
                     return <Card name={name} avatar={avatar}/>
-                })
-            }
+                }):null
+            } */}
         </div>
     )
 }
