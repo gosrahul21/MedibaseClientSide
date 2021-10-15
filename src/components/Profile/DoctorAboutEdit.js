@@ -100,7 +100,7 @@ function DoctorAboutEdit({user,type}) {
                     required={true}
                 />
                 <div className="dob">
-                    <span for="dob">Enter DOB:</span>
+                    <span >Enter DOB:</span>
                     <Input 
                         className="input__mui" 
                         type="date" 
