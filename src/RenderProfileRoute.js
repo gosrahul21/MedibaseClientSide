@@ -5,7 +5,8 @@ import ShowPrescription from './components/Profile/ShowPrescription'
 import AddMedicalRepo from './components/AddMedicalRepo'
 import RecordDisplay from './components/RecordDisplay'
 import ShowDetailedPres from './components/ShowDetailedPres'
-function RenderProfileRoute({email,userId,type}) {
+import DoctorProfile from './components/Profile/DoctorProfile'
+function RenderProfileRoute({targetUser,email,userId,type}) {
     // const {email} = useParams()
 
     return (
@@ -17,7 +18,7 @@ function RenderProfileRoute({email,userId,type}) {
             <Route exact path='/detailed-pres/:id'><ShowDetailedPres/></Route>
             <Route exact path=''>
                
-                <PatientProfile/> 
+               {targetUser.role==='patient'? <PatientProfile targetUser={targetUser}/>:<DoctorProfile targetUser={targetUser}/>}
                 <ShowPrescription type={type} userId={userId} email={email}/>
             </Route>
            

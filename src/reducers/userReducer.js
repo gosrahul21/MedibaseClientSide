@@ -1,10 +1,12 @@
 import {
     GET_USER,
     LOGIN_USER,
-    LOGOUT_USER
+    LOGOUT_USER,
+    GET_USER_LOADING,
+    LOGIN_USER_LOADING,
 } from '../actions/actionTypes'
 
-const initialState = {}
+const initialState = {loading: false}
 
 const userReducer =  (state=initialState,action) =>{
 
@@ -13,10 +15,18 @@ const userReducer =  (state=initialState,action) =>{
         case LOGIN_USER:
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
+                loading:false
+            }
+        case GET_USER_LOADING:
+        case LOGIN_USER_LOADING:
+            return {
+                ...state,
+                loading:true
             }
         case LOGOUT_USER:
-            return {}
+        
+            return {loading:false}
         default:
             return state
     }

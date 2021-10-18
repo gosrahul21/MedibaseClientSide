@@ -35,7 +35,7 @@ function RecordDisplay() {
              <div className="recordDisplay">
              <h1>Your Prescription</h1>
            {history.map((hist)=>(
-               <div className="record-box">
+               <div className="record-box" key={hist._id}>
                <p>Prescribed by {hist.docId.name} on {new  Date(hist.date).toLocaleDateString()}</p>
            </div>
            )) }

@@ -1,15 +1,20 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {useHistory,Link} from 'react-router-dom'
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import './Login.css'
 import axios from 'axios'
 import { GET_USER } from '../../actions/actionTypes';
 const Login = () => {
-
+    const {user} = useSelector((state)=> state)
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const history = useHistory();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useEffect(()=>{ 
+        if(user.email)
+            history.push('/')
+    },[user,history])
 
     const loginSubmit =  (e) => {
         e.preventDefault();

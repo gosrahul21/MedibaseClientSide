@@ -22,6 +22,10 @@ export default function ShowPrescription({email,type,userId}) {
             console.log(err);
             setLoading(false)
         })
+
+        return ()=>{
+            setHistories(null);
+        }
     },[userId])
 
 

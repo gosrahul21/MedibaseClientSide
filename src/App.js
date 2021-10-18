@@ -1,7 +1,7 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import {
 Route,Switch} from 'react-router-dom';
-import axios from 'axios'
+
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import Header from './components/Header/Header';
@@ -13,82 +13,14 @@ import ChangePermisssions from './components/ChangePermissions';
 import Profile from './components/Profile/Profile';
 import About from './components/Profile/About';
 import PrivateRoute from './PrivateRoute'
-import {useDispatch,useSelector} from 'react-redux'
-import {  GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER } from './actions/actionTypes';
+import {useSelector} from 'react-redux'
+// import {  GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER } from './actions/actionTypes';
 
 
 
 
 const App = () => {
-    
-
-    const dispatch = useDispatch();
-    const user = useSelector((state)=> state.user)
-    const token = localStorage.getItem('token_id');
-    // useEffect(()=>{
-    //         navigator.geolocation.getCurrentPosition((positon)=>{
-                
-    //         })
-    // },[]);
-// token login 
-    useEffect(()=>{
-        
-        if(token){
-            //request the user details
-            axios.get(`${process.env.REACT_APP_API}/auth`,{headers:{token}}).then(({data})=>{
-                const {userId,name, email,role,avatar} = data;
-                dispatch({
-                    type:GET_USER,
-                    payload:{
-                        userId,
-                        name,
-                        email,
-                        role,
-                        avatar
-                    }
-                })
-            }).catch((err)=>{
-                console.log(err.data)
-            })
-        }
-    },[dispatch,token])
-   
-
-    useEffect(()=>{
-       
-        if(user.email){
-       
-            if(user.role === 'patient'){
-                //login user is patient
-                axios.get(`${process.env.REACT_APP_API}/patient`,{headers:{token}})
-                .then(({data})=>{
-                    dispatch({
-                        type:GET_NORM_USER_ABOUT,
-                        payload:data
-                    })
-                }).catch(()=>{
-                    //give some error message in the screen to create profile
-                    //and redirect to create profile page
-                    // history.push('/about')
-                })
-            }else{
-                //login user is doctor
-                axios.get(`${process.env.REACT_APP_API}/doctor`,{headers:{token}}).then(({data})=>{
-                    dispatch({
-                        type:GET_DOCTOR_ABOUT,
-                        payload:data
-                    })
-                }).catch(({data})=>{
-                    //give some error message in the screen to create profile
-                    //and redirect to create profile page
-                    // history.push('/about')
-                    console.log("error data",data)
-                })
-            }
-        }
-
-    },[user,token,dispatch])
-
+    const {user} = useSelector((state)=>state)
 
     
     return (

@@ -1,5 +1,6 @@
-import React,{useState} from 'react'
-import './SignUp.css'
+import React,{useState,useEffect} from 'react';
+import './SignUp.css';
+import {useSelector} from 'react-redux';
 // import {auth,googleAuthProvider} from '../../firebase'
 import { useHistory,Link } from 'react-router-dom';
 import axios from 'axios';
@@ -10,8 +11,10 @@ export default function SignUp() {
     const [password2,setPassword2] = useState('')
     const [role,setRole] = useState('');
     const history = useHistory()
- 
-
+    const {user} = useSelector((state)=> state)
+    useEffect(()=>{
+        if(user.email) history.push('/')
+    },[user,history])
 
     const formSubmit = (e) => {
         e.preventDefault()

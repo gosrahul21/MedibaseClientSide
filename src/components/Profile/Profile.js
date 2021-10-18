@@ -1,7 +1,7 @@
 import React ,{useEffect,useState} from 'react'
 import './Profile.css'
 import SettingsIcon from '@material-ui/icons/Settings'
-import {PhotoCamera} from '@material-ui/icons'
+import {PhotoCamera,VerifiedUser} from '@material-ui/icons'
 import { useHistory,useParams } from 'react-router'
 import { Button,IconButton ,CircularProgress} from '@material-ui/core'
 import { useSelector,useDispatch } from 'react-redux'
@@ -105,11 +105,14 @@ const Profile = () => {
 
                    {user.email===email
                    &&(<div className="profile__change">
-                       <label  htmlFor='avatar' style={{cursor:"pointer",
-                       display:"flex"
-                       ,flexDirection:"column",
-                       justifyContent:"center",
-                       alignItems:"center"
+                       <label  htmlFor='avatar' style={
+                        {
+                            cursor:"pointer",
+                            display:"flex",
+                            height:"100%",
+                            flexDirection:"column",
+                            justifyContent:"center",
+                            alignItems:"center"
                        }}>
                        
                        <IconButton  component="span">
@@ -139,7 +142,7 @@ const Profile = () => {
                     </div>
                 
                 <div className="name">
-                    <h1>{(targetUser.patient?.name)||(targetUser.doctor?.name)}</h1>
+                    <h1>{(targetUser.patient?.name)||(targetUser.doctor?.name)}{targetUser.doctor?.verified&& <VerifiedUser style={{color:"green"}} />}</h1>
                     <div className="name__id">
                         <h3>{email}</h3>
                         {/* Copy to clipboard need to be added */}
@@ -200,7 +203,7 @@ const Profile = () => {
 {/* 
             if request does not exist then don't show the profile*/}
               {(requestStatus&& requestStatus.status)|| (user.email===email) ?(<div className="profile__row">
-                  <RenderProfileRoute userId={targetUser.id} type={requestStatus?.type} email={email}/>
+                  <RenderProfileRoute targetUser = {targetUser} userId={targetUser.id} type={requestStatus?.type} email={email}/>
                   </div>)
                   :<h2>{`You don't have permission to access the ${(targetUser.patient?.name)||(targetUser.doctor?.name)}'s profile`}</h2>}
 

@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import { Input } from '@material-ui/core'
 import {useDispatch,useSelector} from 'react-redux'
+import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import {GET_DOCTOR_ABOUT} from '../../actions/actionTypes'
 
@@ -14,7 +15,7 @@ function DoctorAboutEdit({user,type}) {
     const [organizationType,setOrganizationType] = useState("")
     const token = localStorage.getItem('token_id')
     const doctor = useSelector(state => state.doctor)
-
+    const history = useHistory();
     const dispatch = useDispatch()
 
     const onSubmitHandler = (e) => {
@@ -30,11 +31,12 @@ function DoctorAboutEdit({user,type}) {
 
         },
         {headers:{token}}).then(({data})=>{
-            console.log(data)
+           
             dispatch({
                 type:GET_DOCTOR_ABOUT,
                 payload:data
             })
+            history.push('/')
             //add remaining details in state
         }).catch(({data})=>{
             console.log(data)
@@ -55,6 +57,7 @@ function DoctorAboutEdit({user,type}) {
                 type:GET_DOCTOR_ABOUT,
                 payload:data
             })
+            history.goBack()
             //add remaining details in state
         }).catch(({data})=>{
             console.log(data)
