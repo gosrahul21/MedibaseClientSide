@@ -14,7 +14,7 @@ import Profile from './components/Profile/Profile';
 import About from './components/Profile/About';
 import PrivateRoute from './PrivateRoute'
 import {useSelector} from 'react-redux'
-
+import Alert from './Alert'
 
 const App = () => {
     const {user} = useSelector((state)=>state)
@@ -22,6 +22,7 @@ const App = () => {
     return (
         <>
             {user.email&&<Header/>}
+            <Alert onClose={()=>{}}>hello this is medibase</Alert>
             <Switch>
                 <PrivateRoute exact path="/" component={Home}/>
                 <Route exact path="/signup" component={SignUp}/>

@@ -4,6 +4,8 @@ import { useDispatch,useSelector } from 'react-redux';
 import './Login.css'
 import axios from 'axios'
 import { GET_USER } from '../../actions/actionTypes';
+import {toast} from 'react-toastify'
+
 const Login = () => {
     const {user} = useSelector((state)=> state)
     const [email,setEmail] = useState("");
@@ -18,26 +20,32 @@ const Login = () => {
 
     const loginSubmit =  (e) => {
         e.preventDefault();
-        axios.post(`${process.env.REACT_APP_API}/auth/login`,{
-            email,password
-        }).then(({data})=>{
-            const {userId,name, email,role,avatar,token} = data;
-            //store the token in localstorage
-           localStorage.setItem('token_id',token)
-           dispatch({
-               type:GET_USER,
-               payload:{
-                   userId,
-                   name,
-                   email,
-                   role,
-                   avatar
-               }
-           })
-           history.push('/')
-        }).catch((err)=>{
-            console.log(err.response)
-        })
+       toast.promise( axios.post(`${process.env.REACT_APP_API}/auth/login`,{
+        email,password
+    }).then(({data})=>{
+        const {userId,name, email,role,avatar,token} = data;
+        //store the token in localstorage
+       localStorage.setItem('token_id',token)
+       dispatch({
+           type:GET_USER,
+           payload:{
+               userId,
+               name,
+               email,
+               role,
+               avatar
+           }
+       })
+       history.push('/')
+       if(name)
+       toast('Welcome '+name.split(' ')[0],{type:"success"})
+    }),{
+        pending:"Verifying credentials",
+        success:"Login Successfull",
+        error:"user login error"
+
+
+    })
     }
 
     return (<div className="login">

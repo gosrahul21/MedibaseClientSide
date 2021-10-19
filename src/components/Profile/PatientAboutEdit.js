@@ -1,8 +1,10 @@
 import React,{useState,useEffect} from 'react'
 import { Input } from '@material-ui/core'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
-
+import {useHistory} from 'react-router-dom'
+import { useSelector,useDispatch } from 'react-redux'
+import { GET_NORM_USER_ABOUT } from '../../actions/actionTypes'
+import {toast} from 'react-toastify'
 
 export default function PatientAboutEdit() {
 
@@ -11,23 +13,20 @@ export default function PatientAboutEdit() {
     const [contactNo,setContact] = useState("")
     const [gender,setGender] = useState("")
     const token = localStorage.getItem('token_id')
-
-
+    const dispatch = useDispatch()
+    const history = useHistory();
     const patient = useSelector(({patient})=>patient)
 
     useEffect(()=>{
-        axios.get(`${process.env.REACT_APP_API}/patient`,{headers:{token}})
-        .then(({data:{name,DOB,contactNo,gender}})=>{
+        if(patient){
+            const {name,DOB,contactNo,gender} = patient
             setName(name)
             setDob(DOB)
             setContact(contactNo)
             setGender(gender)
-           
+        }
 
-        }).catch((err)=>{
-            console.log(err.data)
-        })
-    },[token])
+    },[patient])
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -39,11 +38,16 @@ export default function PatientAboutEdit() {
             contactNo
         },{headers:{token}})
         .then(({data})=>{
-            console.log(data)
+            
+            dispatch({
+                type:GET_NORM_USER_ABOUT,
+                payload:data
+            })
+            toast('Profile created')
         }).catch(({data})=>{
-            console.log(data)
+            toast('Profile Update failed!',{type:"error"})
         })
-
+        //UPDATING THE PROFILE OF THE USER
         return axios.put(`${process.env.REACT_APP_API}/patient/${patient._id}`,{
             name,
             DOB:dob,
@@ -54,8 +58,15 @@ export default function PatientAboutEdit() {
         },
         {headers:{token}}).then(({data})=>{
            //dispatch the updated profile
-            console.log(data)
+            // console.log(data)
+            toast('Profile Updated !!')
+            dispatch({
+                type:GET_NORM_USER_ABOUT,
+                payload:data
+            })
+            history.goBack()
         }).catch(({data})=>{
+            toast('Profile Update failed!',{type:"error"})
             console.log(data)
         })
 

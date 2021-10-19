@@ -4,12 +4,13 @@ import {useSelector} from 'react-redux';
 // import {auth,googleAuthProvider} from '../../firebase'
 import { useHistory,Link } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
     const [ email,setEmail] = useState("")
     const [password,setPassword] = useState('')
     const [password2,setPassword2] = useState('')
-    const [role,setRole] = useState('');
+    const [role,setRole] = useState('patient');
     const history = useHistory()
     const {user} = useSelector((state)=> state)
     useEffect(()=>{
@@ -33,18 +34,33 @@ export default function SignUp() {
         // })().then(()=>{ console.log("done")}).catch((err)=>{
         //     console.log(err)
         // })
+        if(password.length<6){
+            return toast('Your password must be at least 6 characters long',{type:"warning"});
+        }
+
+
+        if(password!==password2){
+            return toast('Please re-enter the same password',{type:"warning"})
+        }
+
         axios.post(`${process.env.REACT_APP_API}/auth/register`,{
             email,
             password,
             role
         }).then(({data})=>{
             const {success} = data
-            if(success)
-                return history.push('/login')
+            
+            if(success){
+                toast('SignUp complete');
+                return history.push('/login')}
             else
                 throw new Error("Registeration Failed")
+            
         }).catch((err)=>{
-            console.log(err.data);
+            console.log(err.response.data)
+            if(err.response.data.split(' ')[0]==='E11000')
+                return toast(`User with email address ${email} already registered`,{type:"error"})
+            toast('Sign up failed !'+err.response.data,{type: 'error'});
         })
 
 

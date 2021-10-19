@@ -1,10 +1,10 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Input } from '@material-ui/core'
 import {useDispatch,useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import {GET_DOCTOR_ABOUT} from '../../actions/actionTypes'
-
+import {toast} from 'react-toastify'
 function DoctorAboutEdit({user,type}) {
     
     const [name,setName] = useState("")
@@ -16,7 +16,18 @@ function DoctorAboutEdit({user,type}) {
     const token = localStorage.getItem('token_id')
     const doctor = useSelector(state => state.doctor)
     const history = useHistory();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(!doctor) return;
+        const {name, DOB,contactNo,gender,organization,organization_type} = doctor
+        setName(name)
+        setDob(DOB)
+        setContact(contactNo)
+        setGender(gender)
+        setOrganizationName(organization)
+        setOrganizationType(organization_type)
+    },[doctor])
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -37,13 +48,13 @@ function DoctorAboutEdit({user,type}) {
                 payload:data
             })
             history.push('/')
+            toast('Profile Created',{type:"success"})
             //add remaining details in state
         }).catch(({data})=>{
             console.log(data)
         })
 
-
-        axios.put(`${process.env.REACT_APP_API}/doctor/${doctor._id}`,{
+        toast.promise( axios.put(`${process.env.REACT_APP_API}/doctor/${doctor._id}`,{
             name,
             DOB:dob,
             gender,
@@ -58,10 +69,15 @@ function DoctorAboutEdit({user,type}) {
                 payload:data
             })
             history.goBack()
+            // toast('Profile Updated',{type:"success"})
             //add remaining details in state
-        }).catch(({data})=>{
-            console.log(data)
-        })
+        }),
+        {
+            pending: 'Updating the Profile!',
+            success: 'Profile Updated 👌',
+            error: 'Profile updatation failed 🤯'
+          })
+       
        
     }
 

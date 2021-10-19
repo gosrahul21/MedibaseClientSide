@@ -5,6 +5,7 @@ import { ArrowBack, CloseRounded } from '@material-ui/icons';
 import {Button} from '@material-ui/core'
 import axios from 'axios'
 import FileUpload from './forms/FileUpload'
+import {toast} from 'react-toastify'
 export default function AddMedicalRepo({userId}) {
    
     const [medicines,setMedicines] = useState([]);
@@ -43,10 +44,10 @@ export default function AddMedicalRepo({userId}) {
         axios.post(`${process.env.REACT_APP_API}/history/${userId}`,{...state,prescription_image:image,medicines},{headers:{token}}).then(({data})=>{ 
  
             history.goBack();
+            toast('Patient Prescribed',{type:'success'});
            
         }).catch((error)=>{
-
-            console.log(error.data,error.message)
+            toast('Patient prescription failed !',{type:'error'});
         })
     }
 
