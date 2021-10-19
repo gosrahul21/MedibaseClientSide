@@ -41,6 +41,8 @@ const PrivateRoute = ({ path, component }) => {
             setLoading(false)
             console.log(err.data)
         })
+    }else{
+        setLoading(false)
     }
 },[dispatch,token])
 

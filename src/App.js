@@ -14,15 +14,11 @@ import Profile from './components/Profile/Profile';
 import About from './components/Profile/About';
 import PrivateRoute from './PrivateRoute'
 import {useSelector} from 'react-redux'
-// import {  GET_DOCTOR_ABOUT, GET_NORM_USER_ABOUT, GET_USER } from './actions/actionTypes';
-
-
 
 
 const App = () => {
     const {user} = useSelector((state)=>state)
-    console.log('app ')
-    
+
     return (
         <>
             {user.email&&<Header/>}
