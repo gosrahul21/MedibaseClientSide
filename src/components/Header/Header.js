@@ -91,7 +91,9 @@ export default function Header() {
 
     return (
         <div className={`navbar`}>
-            <h1 className="cursor">MediBase</h1>
+            <Link style={{height:"50px"}} to='/'> <img style={{height:"100%"}}src='/medibase.png' alt="Medibase" /></Link>
+           
+            {/* <h1 className="cursor">MediBase</h1> */}
             { loginUserEmail&&(<div className="nav-right">
 
             <div className="navRightPart" >

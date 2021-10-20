@@ -38,7 +38,7 @@ const Login = () => {
        })
        history.push('/')
        if(name)
-       toast('Welcome '+name.split(' ')[0],{type:"success"})
+       toast('Welcome '+name.split(' ')[0],{type:"default"})
     }),{
         pending:"Verifying credentials",
         success:"Login Successfull",

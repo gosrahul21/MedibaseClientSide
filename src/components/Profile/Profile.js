@@ -115,7 +115,7 @@ const Profile = () => {
                             alignItems:"center"
                        }}>
                        
-                       <IconButton  component="span">
+                       <IconButton >
                            <PhotoCamera/>
                         </IconButton>
                             
@@ -190,7 +190,7 @@ const Profile = () => {
                   </Button>
               }
                 
-               {user.email===email&& <IconButton style={{right:0}} component={SettingsIcon} onClick ={()=>history.push('/about')}>
+               {user.email===email&& <IconButton style={{right:0}} onClick ={()=>history.push('/about')}>
                     <SettingsIcon/>
                 </IconButton>}
 
