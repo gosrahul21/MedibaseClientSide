@@ -116,7 +116,8 @@ export default function Header() {
                     </Link>
                 </div>
                 
-                <Link className="navRightPart" to="/records">My Records</Link>
+
+                <Link className="navRightPart"  to="/records">My Records</Link>
             
 {/*             
             <div className="navRightPart">

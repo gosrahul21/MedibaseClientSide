@@ -13,6 +13,7 @@ import ChangePermisssions from './components/ChangePermissions';
 import Profile from './components/Profile/Profile';
 import About from './components/Profile/About';
 import PrivateRoute from './PrivateRoute'
+import Admin from './components/Profile/Admin'
 import {useSelector} from 'react-redux'
 import Alert from './Alert'
 
@@ -34,7 +35,7 @@ const App = () => {
                 {/* <PrivateRoute exact path = '/myprofile'><Profile/></PrivateRoute> */}
                 <PrivateRoute exact path = '/search-profile/:email/' component={Profile}></PrivateRoute>
                 <PrivateRoute exact path= "/about" component={About}/>
-              
+                <Admin exact path="/admin"/>
             </Switch>
         </>
       

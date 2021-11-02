@@ -15,7 +15,6 @@ function ProfileRoute({path,component}) {
     // render it to the desire page
     useEffect(()=>{
         
-            // setLoading(true)
             if(user.role === 'patient'){
                 //login user is patient
                 axios.get(`${process.env.REACT_APP_API}/patient`,{headers:{token}})
@@ -47,10 +46,6 @@ function ProfileRoute({path,component}) {
                     setLoading(false)
                 })
             }
-        
-
-   
-
     },[dispatch,token,user.role])
 
 

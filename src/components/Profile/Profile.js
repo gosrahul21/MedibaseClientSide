@@ -115,7 +115,7 @@ const Profile = () => {
                             alignItems:"center"
                        }}>
                        
-                       <IconButton >
+                       <IconButton component="span">
                            <PhotoCamera/>
                         </IconButton>
                             

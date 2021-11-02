@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 import {useSelector,useDispatch} from 'react-redux';
 import Login from './components/auth/Login'
 import ProfileRoute from './ProfileRoute'
-import {GET_USER} from './actions/actionTypes'
+import {GET_USER, LOGOUT_USER} from './actions/actionTypes'
 import axios from 'axios'
 import {CircularProgress} from '@material-ui/core'
 
@@ -21,7 +21,6 @@ const PrivateRoute = ({ path, component }) => {
     // if profile is loaded and user.email is present but proflie is not present then move to about page
 
     useEffect(()=>{
-    
     if(token){
         //request the user details
         axios.get(`${process.env.REACT_APP_API}/auth`,{headers:{token}}).then(({data})=>{
@@ -42,6 +41,9 @@ const PrivateRoute = ({ path, component }) => {
             console.log(err.data)
         })
     }else{
+        dispatch({
+            type:LOGOUT_USER
+        })
         setLoading(false)
     }
 },[dispatch,token])
