@@ -20,7 +20,7 @@ function PatientProfile({targetUser}) {
 
     return (
         
-            <div className="show_profile">
+            <div className="show_profile scale-up-center">
                 <div className="row__header">
                         <h2> About</h2>
                 </div>

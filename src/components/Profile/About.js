@@ -14,7 +14,7 @@ function About() {
 
 
     return (
-        <div className="about">
+        <div className="about ">
             {user.role==='doctor'?<DoctorAboutEdit user ={user}/>:<PatientAboutEdit  user ={user}/>}
         </div>
     )

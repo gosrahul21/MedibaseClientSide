@@ -93,10 +93,10 @@ const Profile = () => {
     
 
     return (
-        <div className="profile">
+        <div className="profile ">
           
            { targetUser?(<>
-            <div className="profile__top">
+            <div className="profile__top swing-in-top-fwd">
 
                 {/* avatar */}
                 <div style={{

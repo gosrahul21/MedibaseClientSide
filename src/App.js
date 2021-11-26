@@ -1,4 +1,5 @@
 import React from 'react'
+import './App.css'
 import {
 Route,Switch} from 'react-router-dom';
 
@@ -21,7 +22,7 @@ const App = () => {
     const {user} = useSelector((state)=>state)
 
     return (
-        <>
+        <div className="app">
             {user.email&&<Header/>}
             <Alert onClose={()=>{}}>hello this is medibase</Alert>
             <Switch>
@@ -37,7 +38,7 @@ const App = () => {
                 <PrivateRoute exact path= "/about" component={About}/>
                 <Admin exact path="/admin"/>
             </Switch>
-        </>
+        </div>
       
     )
 }
