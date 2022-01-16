@@ -8,7 +8,8 @@ import {Provider} from 'react-redux'
 
 ReactDom.render(
     <Provider store={store}>
-<Router>
-<App/>
-    </Router>
-    </Provider>,document.querySelector('#root'));
+        <Router>
+            <App/>
+        </Router>
+    </Provider>,document.querySelector('#root')
+    );

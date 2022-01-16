@@ -21,6 +21,7 @@ function Home() {
                     return <Card name={name} avatar={avatar}/>
                 }):null
             } */}
+            <img src="https://thumbs.dreamstime.com/b/top-view-stethoscope-red-heart-shape-yellow-background-check-health-up-concept-168514010.jpg"/>
         </div>
     )
 }

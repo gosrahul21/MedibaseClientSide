@@ -16,7 +16,7 @@ export default function PatientAboutEdit() {
     const dispatch = useDispatch()
     const history = useHistory();
     const patient = useSelector(({patient})=>patient)
-
+    
     useEffect(()=>{
         if(patient){
             const {name,DOB,contactNo,gender} = patient

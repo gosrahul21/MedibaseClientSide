@@ -10,10 +10,12 @@ import Button from '@material-ui/core/Button';
 
 
 const Popup = ({className,message,children,summary,callback}) => {
+    console.log('popup called')
     const [open, setOpen] = useState(false);
 
 
   const handleClickOpen = () => {
+    
     setOpen(true);
   };
 

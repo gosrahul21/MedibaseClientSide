@@ -1,4 +1,4 @@
-
+// @flow
 import React from 'react';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -7,12 +7,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input'
-
 import { useHistory } from 'react-router';
 
 
 
-const SearchPatient = ({message,children,setEmail,email}) => {
+const SearchPatient = ({message ,children,setEmail , email}) => {
     const [open, setOpen] = React.useState(false);
     const history = useHistory();
 
@@ -45,7 +44,7 @@ const SearchPatient = ({message,children,setEmail,email}) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-          {message}
+            {message}
           </DialogContentText>
             <Input onChange={(e)=>setEmail(e.target.value)} value={email} placeholder="Patient Id"/>
         </DialogContent>

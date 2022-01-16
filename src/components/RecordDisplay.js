@@ -11,7 +11,7 @@ function RecordDisplay() {
     const [history,setHistory] = useState([])
     const [loading,setLoading] = useState(false)
     const token = localStorage.getItem('token_id')
-
+    console.log("record display rerendered");
     useEffect(()=>{
         setLoading(true)
         axios.get(`${process.env.REACT_APP_API}/history`,{headers:{token}})

@@ -24,7 +24,7 @@ const Profile = () => {
     // const [pending,setPending] = useState(null)   //pending request for current user
     // const [granted,setGranted] = useState(null)   //granted access request given by current user
     
-    
+    console.log('test reducer from profile')
     useEffect(()=>{
        // search for the required user
 
